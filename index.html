@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>Pampero</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="live">
+  <header>
+    <span id="sail-badge">---</span>
+    <button id="menu-btn" aria-label="menu">≡</button>
+  </header>
+
+  <section class="zone zone-compass">
+    <canvas id="compass" width="600" height="600"></canvas>
+    <div class="overlay"><span id="heading-val">---</span><span class="unit">°</span></div>
+    <div class="src" id="heading-src">&nbsp;</div>
+  </section>
+
+  <section class="zone zone-heel">
+    <canvas id="heel" width="700" height="260"></canvas>
+    <div class="overlay">
+      <span id="heel-val">--</span><span class="unit">°</span>
+      <span id="heel-side" class="side"></span>
+    </div>
+  </section>
+
+  <section class="zone zone-speed">
+    <div class="speed-big"><span id="sog-val">--</span><span class="unit">kn</span></div>
+    <div id="status-line" class="ok">iniciando…</div>
+  </section>
+
+  <dialog id="menu">
+    <button data-action="zero-heel">Zerar heel</button>
+    <button data-action="export-gpx">Exportar GPX</button>
+    <button data-action="stop">Parar regata</button>
+    <button data-action="close" class="secondary">Fechar</button>
+  </dialog>
+
+  <script src="vendor/dexie.min.js"></script>
+  <script src="sensors.js"></script>
+  <script src="storage.js"></script>
+  <script src="uploader.js"></script>
+  <script src="gpx.js"></script>
+  <script src="ui.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

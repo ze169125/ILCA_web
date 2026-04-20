@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>Pampero — Setup</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="setup">
+  <main>
+    <h1>Pampero</h1>
+    <p class="sub">ABCL Lightning — registro inicial</p>
+
+    <form id="form" autocomplete="off">
+      <label for="sail">Número de vela</label>
+      <input id="sail" type="text" inputmode="latin" autocapitalize="characters"
+             placeholder="BRA-15832" spellcheck="false" required>
+      <p class="hint">Ex.: <code>BRA-15832</code></p>
+
+      <button id="start" type="submit">Iniciar</button>
+      <p class="hint" id="perm-hint">O botão pede permissão de GPS e orientação.</p>
+    </form>
+  </main>
+  <script>
+    const form = document.getElementById('form');
+    const sailInput = document.getElementById('sail');
+    sailInput.value = (localStorage.getItem('pampero.sail') || '').toUpperCase();
+
+    async function requestSensorPerms() {
+      if (typeof DeviceOrientationEvent !== 'undefined'
+          && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        try { await DeviceOrientationEvent.requestPermission(); } catch (_) {}
+      }
+      if (typeof DeviceMotionEvent !== 'undefined'
+          && typeof DeviceMotionEvent.requestPermission === 'function') {
+        try { await DeviceMotionEvent.requestPermission(); } catch (_) {}
+      }
+      if ('geolocation' in navigator) {
+        await new Promise(res => navigator.geolocation.getCurrentPosition(res, res, {timeout: 3000}));
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const v = sailInput.value.trim().toUpperCase();
+      if (!/^[A-Z]{2,4}-?\d{1,6}$/.test(v)) {
+        alert('Número de vela inválido. Exemplo: BRA-15832');
+        return;
+      }
+      localStorage.setItem('pampero.sail', v);
+      await requestSensorPerms();
+      location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
