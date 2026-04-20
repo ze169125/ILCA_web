@@ -1,4 +1,9 @@
-/* app.js — orchestration: init, wake lock, 1Hz tick, menu wiring. */
+/* Copyright (c) 2026 PopSolutions Cooperativa
+ * SPDX-License-Identifier: CHARRUA-1.2
+ * Licença CHARRUA v1.2 — ver LICENSE ou https://gitlab.fing.edu.uy/charrua/licencia
+ *
+ * app.js — orchestration: init, wake lock, 1Hz tick, menu wiring.
+ */
 (function () {
   'use strict';
 

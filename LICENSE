@@ -1,2 +1,1128 @@
-This project is licensed under the GNU Affero General Public License v3.0
-or later.  See https://www.gnu.org/licenses/agpl-3.0.html for the full text.
+# LICENCIA CHARRUA v1.2
+
+## CHARRUA — Copyleft Humanitario para Autonomía, Resistencia, Reciprocidad, Uso Abierto
+
+*En memoria del pueblo Charrúa — exterminado por el genocidio colonial
+en el Río de la Plata. Si mataron a todos los indios, lo mínimo que
+pueden hacer es dejar una honra en su nombre.
+Esta licencia lleva ese nombre para que nadie olvide.*
+
+---
+
+**Copyright (c) 2026 PopSolutions Cooperativa**
+
+---
+
+## PREÁMBULO
+
+El pueblo Charrúa — nación indígena que habitaba las llanuras del actual
+Uruguay, sur de Brasil y noreste de Argentina — fue sistemáticamente
+exterminado en el siglo XIX. La Matanza de Salsipuedes (1831),
+orquestada por el Estado uruguayo naciente, marcó el episodio final de
+un genocidio que comenzó con la colonización europea. Los últimos
+Charrúas sobrevivientes fueron exhibidos como curiosidades en París,
+donde murieron en el exilio.
+
+Esta licencia lleva el nombre CHARRUA no como apropiación, sino como
+HONRA y COMPROMISO. Así como el pueblo Charrúa resistió hasta el final
+contra la dominación colonial, el software licenciado bajo estos términos
+lleva consigo el deber de resistir contra toda forma de opresión,
+autoritarismo y violencia institucionalizada.
+
+La Licencia CHARRUA combina la libertad y sencillez de la licencia BSD
+con el copyleft militante de la GNU AGPLv3, agregando cláusulas éticas
+que impiden el uso de este software como herramienta de opresión.
+
+**Principio fundamental:** Libertad total para quien construye.
+Ninguna libertad para quien destruye.
+
+---
+
+## SECCIÓN 1 — DEFINICIONES
+
+**1.1** "Software" significa el código fuente, código objeto, documentación,
+archivos de configuración, scripts, binarios, y cualquier material
+distribuido bajo esta licencia, incluyendo trabajos derivados.
+
+**1.2** "Trabajo Derivado" significa cualquier obra basada en el Software,
+incluyendo modificaciones, traducciones, adaptaciones, compilaciones,
+extensiones e integraciones, independientemente del método de vinculación
+técnica (estática, dinámica, por red, API, microservicio, o cualquier otro).
+
+**1.3** "Distribución" significa cualquier acto de poner a disposición el
+Software o Trabajo Derivado a terceros, por cualquier medio, incluyendo:
+  - (a) distribución de copias físicas o digitales;
+  - (b) puesta a disposición para descarga;
+  - (c) oferta como servicio por red (SaaS, PaaS, IaaS, o cualquier
+    modelo de entrega por red);
+  - (d) incorporación en hardware o firmware;
+  - (e) preinstalación en equipos.
+
+**1.4** "Interacción por Red" significa cualquier situación en la que un
+usuario interactúa con el Software remotamente a través de una red de
+computadoras, aun cuando nunca reciba una copia del Software.
+
+**1.5** "Uso Prohibido" significa cualquier uso descrito en la Sección 5
+(Restricciones Éticas) de esta licencia.
+
+**1.6** "Estado de Excepción" significa cualquier régimen político en el
+que derechos fundamentales, garantías constitucionales o libertades civiles
+son suspendidas, suprimidas o sistemáticamente violadas, sea por mecanismo
+legal o de facto, incluyendo pero no limitándose a: golpes de estado,
+dictaduras militares, regímenes de partido único, estados de sitio
+permanentes, y gobiernos que practican persecución política sistemática.
+
+**1.7** "Fascismo" significa cualquier ideología, movimiento o régimen
+político que combine, en todo o en parte: ultranacionalismo excluyente,
+supremacismo racial o étnico, culto al líder autoritario, supresión
+violenta de la disidencia, militarismo expansionista, corporativismo
+estatal, y deshumanización sistemática de grupos definidos por etnia,
+religión, orientación sexual, identidad de género, origen nacional o
+clase social. El término incluye neofascismo, neonazismo, y variantes
+contemporáneas que adopten estas características independientemente de
+cómo se autodenominen.
+
+**1.8** "Resistencia Antifascista" significa acciones colectivas o
+individuales, proporcionales a la amenaza, que buscan impedir la
+ascensión, consolidación o perpetuación del fascismo conforme definido
+en 1.7, en legítima defensa de personas, comunidades o instituciones
+democráticas.
+
+**1.9** "Vigilancia Masiva" significa la recolección, almacenamiento,
+procesamiento o análisis indiscriminado de datos personales de
+poblaciones enteras o grupos amplios sin consentimiento informado
+individual, sin base legal democrática específica, o sin supervisión
+judicial independiente.
+
+**1.10** "Arma Autónoma" significa cualquier sistema de armas capaz de
+seleccionar y atacar objetivos sin intervención humana significativa en
+el momento de la decisión letal.
+
+**1.11** "Modelo de Inteligencia Artificial" significa cualquier sistema
+de aprendizaje automático, red neuronal, modelo de lenguaje, modelo
+generativo, o sistema estadístico entrenado a partir de datos, capaz de
+generar texto, código, imagen, audio, video, decisiones, o cualquier
+otro tipo de salida.
+
+**1.12** "Entrenamiento de IA" significa el proceso de alimentar datos a
+un Modelo de Inteligencia Artificial durante las fases de preentrenamiento,
+ajuste fino (fine-tuning), alineamiento (RLHF/DPO/etc.), destilación,
+o cualquier otro proceso de optimización de parámetros, incluyendo la
+creación de embeddings, índices vectoriales, o bases de conocimiento
+derivadas del Software.
+
+**1.13** "Biometría Coercitiva" significa la recolección, procesamiento
+o uso de datos biométricos (incluyendo reconocimiento facial, de voz,
+de marcha, de iris, huellas dactilares, o cualquier característica
+fisiológica o conductual) sin consentimiento libre, informado y
+revocable del individuo, o en contextos donde el individuo no posee
+alternativa real para evitar la recolección.
+
+**1.14** "Denunciante" (Whistleblower) significa cualquier persona que,
+de buena fe, reporte, divulgue o proporcione evidencia de violación de
+esta licencia, sea internamente a una organización licenciataria o
+públicamente.
+
+**1.15** "Stewards de la Licencia" significa el colectivo u organización
+responsable del mantenimiento, interpretación y publicación de nuevas
+versiones de la Licencia CHARRUA, conforme lo establecido en la
+Sección 11.
+
+**1.16** "Fraude Financiero Digital" significa esquemas deliberados de
+engaño financiero que utilicen tecnologías digitales, incluyendo pero
+no limitándose a: esquemas Ponzi, pirámides financieras, pump-and-dump,
+rug pulls, emisión fraudulenta de tokens o NFTs, y cualquier mecanismo
+diseñado para transferir riqueza de víctimas desinformadas a
+perpetradores mediante promesas falsas de retorno financiero.
+
+**1.17** "Infraestructura del Violador" significa todo el código,
+scripts, pipelines, configuraciones y software que esté bajo la
+titularidad de derecho de autor o control operacional de la entidad
+violadora y que haya participado en el proceso de scraping, extracción,
+procesamiento o Entrenamiento de IA involucrando el Software. Para
+mayor claridad: la contaminación prevista en esta licencia se aplica
+exclusivamente a la Infraestructura del Violador y NUNCA se extiende
+a software de terceros sobre los cuales el Titular del Derecho de Autor
+del Software CHARRUA no posee derecho de autor, tales como kernels de
+sistemas operativos, bibliotecas de runtime, o frameworks licenciados
+por terceros independientes.
+
+**1.18** "Scraping" significa cualquier proceso automatizado de
+extracción, copia, indexación o recolección del Software o de sus
+componentes, incluyendo crawlers, spiders, scrapers, y cualquier
+mecanismo de recolección automatizada, independientemente del protocolo
+utilizado (HTTP, git, FTP, o cualquier otro).
+
+**1.19** "Titular del Derecho de Autor" (o "Licenciante Original")
+significa la persona o entidad que posee los derechos de autor originales
+sobre el Software y que inicialmente puso a disposición el Software bajo
+esta licencia. Cada contribuidor subsiguiente es titular del derecho de
+autor sobre sus propias contribuciones, conforme la Sección 12.
+
+**1.20** "Licenciatario" significa cualquier persona o entidad que reciba,
+use, modifique o distribuya el Software bajo los términos de esta licencia.
+
+**1.21** "Redistribuidor" significa cualquier Licenciatario que distribuya
+el Software o Trabajos Derivados a terceros. El Redistribuidor asume las
+obligaciones de atribución y copyleft de esta licencia, pero no se
+convierte en Titular del Derecho de Autor sobre el Software original.
+
+**1.22** "Jurisdicción de Protección Insuficiente" significa cualquier
+jurisdicción que cumulativamente:
+  - (a) NO posea legislación de protección de datos personales que
+    garantice, como mínimo, los derechos de acceso, rectificación,
+    eliminación y portabilidad de los datos personales;
+  - (b) O no posea autoridad supervisora independiente de protección de
+    datos con poderes efectivos de fiscalización y sanción;
+  - (c) O no haya sido reconocida como poseedora de nivel adecuado de
+    protección por al menos una de las siguientes autoridades o
+    instrumentos: la Comisión Europea (decisión de adecuación GDPR),
+    la Autoridad Nacional de Protección de Datos de Brasil (ANPD), el
+    Convenio 108+ del Consejo de Europa, o instrumento equivalente
+    reconocido por los Stewards de la Licencia;
+  - (d) O practique vigilancia gubernamental masiva sin supervisión
+    judicial independiente.
+
+---
+
+## SECCIÓN 2 — CONCESIÓN DE DERECHOS (Estilo BSD)
+
+Sujeto a los términos y condiciones de esta licencia, el Titular del
+Derecho de Autor concede a cualquier persona que obtenga una copia de
+este Software una licencia mundial, gratuita, no exclusiva y perpetua
+para:
+
+  - (a) **USAR** el Software para cualquier propósito lícito y ético;
+  - (b) **ESTUDIAR** cómo funciona el Software y adaptarlo a sus necesidades;
+  - (c) **MODIFICAR** el Software y crear Trabajos Derivados;
+  - (d) **DISTRIBUIR** copias del Software original;
+  - (e) **DISTRIBUIR** copias de los Trabajos Derivados;
+  - (f) **COMERCIALIZAR** el Software o Trabajos Derivados.
+
+Estos derechos se conceden bajo la condición de que el uso cumpla con
+TODAS las secciones de esta licencia, especialmente las Secciones 3, 4 y 5.
+
+**2.1 Uso privado e interno.** El Licenciatario puede usar y modificar
+el Software para uso privado o interno sin obligación de poner a
+disposición el código fuente, siempre que:
+  - (a) el Software no sea distribuido a terceros, conforme la Sección 1.3;
+  - (b) el Software no sea puesto a disposición para Interacción por Red,
+    conforme la Sección 1.4;
+  - (c) el uso cumpla íntegramente con las restricciones éticas de la
+    Sección 5 — las restricciones éticas se aplican a TODO uso, incluso
+    privado e interno.
+
+Para mayor claridad: una empresa puede modificar el Software para uso
+interno sin abrir el código, pero NO puede usar el Software internamente
+para vigilancia de sus empleados, discriminación algorítmica en procesos
+de recursos humanos, o cualquier otro Uso Prohibido.
+
+---
+
+## SECCIÓN 3 — COPYLEFT (Estilo AGPLv3)
+
+**3.1 Reciprocidad obligatoria.** Todo Trabajo Derivado debe ser
+distribuido bajo esta misma Licencia CHARRUA, sin excepción. Ninguna
+sublicencia está permitida.
+
+**3.2 Código fuente completo.** Al distribuir el Software o cualquier
+Trabajo Derivado, en formato binario o como servicio, se DEBE
+simultáneamente poner a disposición el código fuente completo
+correspondiente, incluyendo:
+  - (a) todos los archivos fuente necesarios para compilar, instalar y ejecutar;
+  - (b) scripts de compilación, instalación y configuración;
+  - (c) cualquier modificación realizada, claramente identificada;
+  - (d) lista de dependencias e instrucciones de construcción.
+
+**3.3 Cláusula de red (herencia AGPLv3).** Si se modifica el Software y
+se pone a disposición la versión modificada para Interacción por Red, se
+DEBE poner a disposición el código fuente completo de la versión
+modificada a todos los usuarios que interactúen con ella por la red, de
+forma gratuita y fácilmente accesible (por ejemplo, mediante un enlace
+prominente en la interfaz del servicio).
+
+**3.4 Anti-Tivoización.** Si el Software o Trabajo Derivado es
+distribuido como parte de un producto que incluya hardware, el
+distribuidor DEBE proporcionar todas las claves de instalación,
+herramientas e información necesaria para que el usuario pueda instalar
+y ejecutar versiones modificadas del Software en ese hardware, en las
+mismas condiciones en que el Software original opera.
+
+**3.5 Patentes.** Cada contribuidor concede una licencia de patente
+perpetua, mundial, gratuita, no exclusiva e irrevocable sobre
+cualesquiera reivindicaciones de patente que sean necesariamente
+infringidas por el uso del Software o Trabajo Derivado. Si se inicia un
+litigio de patentes contra cualquier entidad alegando que el Software
+infringe una patente, la licencia bajo estos términos se termina
+automática e irrevocablemente.
+
+**3.6 Contaminación por scraping y entrenamiento de IA.**
+
+**(a) Principio de contaminación.** Cualquier entidad que realice
+Scraping conforme definido en 1.18, o cualquier forma de extracción
+automatizada del Software para fines de Entrenamiento de IA, indexación
+en bases de conocimiento, o incorporación en datasets, activa la
+contaminación: toda la Infraestructura del Violador conforme definida
+en 1.17 — incluyendo todo código, scripts, pipelines de datos y
+configuraciones que sean de titularidad o control operacional de la
+entidad violadora y que hayan participado en el proceso — pasa a ser
+considerada Trabajo Derivado del Software CHARRUA para todos los fines
+de esta licencia.
+
+**IMPORTANTE:** La contaminación se aplica EXCLUSIVAMENTE a la
+Infraestructura del Violador. Esta licencia NO tiene y NO alega tener
+el poder de alterar la licencia de software de terceros (kernels,
+bibliotecas de runtime, frameworks, sistemas operativos) que no esté
+bajo la titularidad del violador. La contaminación alcanza lo que
+pertenece al violador — no lo que pertenece a otros.
+
+**(b) Herencia para el modelo resultante.** El Modelo de Inteligencia
+Artificial entrenado, en todo o en parte, con datos contaminados conforme
+3.6(a) es un Trabajo Derivado y:
+  - (i) hereda todas las restricciones éticas de la Sección 5;
+  - (ii) sus pesos, parámetros, arquitectura, datos de entrenamiento y
+    código de entrenamiento que estén bajo la titularidad o control
+    operacional de la entidad violadora deben ser íntegramente puestos
+    a disposición bajo esta misma Licencia CHARRUA;
+  - (iii) cualquier producto, servicio o sistema que utilice el modelo
+    contaminado y que esté bajo la titularidad o control operacional de
+    la entidad violadora también es un Trabajo Derivado y está sujeto
+    a todos los términos de esta licencia;
+  - (iv) el operador debe poner a disposición un mecanismo técnico que
+    permita a cualquier persona verificar si el Software fue utilizado
+    en los datos de entrenamiento.
+
+**(c) Irretroactividad imposible.** La contaminación no puede ser
+revertida por remoción posterior del Software de los datos de
+entrenamiento. Un modelo entrenado con datos CHARRUA permanece
+contaminado aun cuando los datos sean removidos del dataset de
+entrenamiento después del entrenamiento. Los pesos ya fueron alterados.
+El efecto es irreversible.
+
+**(d) Responsabilidad en la cadena.** La contaminación se propaga por la
+cadena de distribución: si la Entidad A scrapeó código CHARRUA y entrenó
+el Modelo X, y la Entidad B hizo fine-tuning del Modelo X para crear el
+Modelo Y, y la Entidad C usa el Modelo Y en su producto — las tres
+entidades operan Trabajos Derivados y están sujetas a esta licencia,
+cada una en la medida de su propia Infraestructura del Violador.
+
+**(e) Presunción de contaminación.** Si un Modelo de Inteligencia
+Artificial genera salidas sustancialmente similares a porciones del
+Software, o si existe evidencia circunstancial razonable de que el
+Software fue incluido en los datos de entrenamiento, se presume la
+contaminación hasta prueba en contrario por parte del operador del modelo.
+
+**3.7 Excepción para uso incidental y de herramientas.** La Sección 3.6
+NO se aplica cuando:
+  - (a) el Software es utilizado como herramienta de desarrollo (IDE,
+    linter, compilador, etc.) durante la construcción de un modelo, sin
+    que el código fuente del Software sea parte de los datos de
+    entrenamiento;
+  - (b) el Software es utilizado exclusivamente para inferencia (ejecución)
+    de un modelo ya entrenado, sin que el Software haya sido parte de los
+    datos de entrenamiento;
+  - (c) investigadores académicos y organizaciones sin fines de lucro
+    utilicen el Software para investigación sobre seguridad de IA,
+    interpretabilidad, auditoría algorítmica, u otros fines de interés
+    público, mediante publicación de los resultados bajo licencia abierta
+    y solicitud de exención parcial a los Stewards de la Licencia
+    conforme la Sección 11.4.
+
+---
+
+## SECCIÓN 4 — ATRIBUCIÓN Y PRESERVACIÓN
+
+**4.1 Aviso de derecho de autor.** Todas las copias o porciones
+sustanciales del Software deben incluir:
+  - (a) el aviso de derecho de autor original;
+  - (b) esta licencia en su integridad o un enlace permanente a su texto
+    oficial;
+  - (c) el aviso memorial del pueblo Charrúa contenido en el preámbulo.
+
+**4.2 Preservación del nombre.** El nombre "CHARRUA" en la identificación
+de la licencia NO puede ser removido, ofuscado o sustituido en ninguna
+copia o Trabajo Derivado. La memoria del pueblo Charrúa es parte
+integrante e indisociable de esta licencia.
+
+**4.3 Aviso de modificación.** Los Trabajos Derivados deben contener
+aviso prominente de que fueron modificados, identificando al autor de la
+modificación y la fecha.
+
+---
+
+## SECCIÓN 5 — RESTRICCIONES ÉTICAS (Cláusula del Antifascismo)
+
+**ATENCIÓN: Esta sección es el alma de la licencia.**
+**Su violación resulta en terminación automática e inmediata de todos
+los derechos concedidos, conforme la Sección 6.**
+
+**Las restricciones éticas de esta sección se aplican a TODO uso del
+Software, incluyendo uso privado e interno (Sección 2.1).**
+
+### 5.1 — Prohibiciones absolutas
+
+Este Software NO puede ser usado, directa o indirectamente, para:
+
+**(a) Crímenes de lesa humanidad:** genocidio, limpieza étnica, tortura,
+desaparición forzada, esclavitud, trata de personas, o cualquier crimen
+definido por el Estatuto de Roma del Tribunal Penal Internacional.
+
+**(b) Vigilancia masiva y biometría coercitiva:** recolección,
+procesamiento o análisis indiscriminado de datos personales de
+poblaciones sin consentimiento informado y sin supervisión judicial
+independiente. Esta prohibición incluye explícitamente:
+  - (i) reconocimiento facial en espacios públicos o semipúblicos sin
+    consentimiento individual explícito;
+  - (ii) sistemas de scoring social o clasificación conductual de
+    ciudadanos;
+  - (iii) Biometría Coercitiva conforme definida en 1.13;
+  - (iv) rastreo de localización masivo, interceptación de comunicaciones,
+    o análisis de metadatos de comunicación de poblaciones sin orden
+    judicial específica e individualizada;
+  - (v) construcción de bases de datos biométricas a partir de imágenes o
+    datos recolectados sin consentimiento (incluyendo scraping de redes
+    sociales para reconocimiento facial).
+
+**EXCEPCIÓN — Cláusula de Legítima Defensa Colectiva (5.1-b-vi):**
+
+La prohibición de reconocimiento facial e identificación biométrica de
+la letra 5.1(b) NO se aplica cuando el uso tenga como propósito
+exclusivo la identificación de individuos, organizaciones o redes que
+promuevan, financien, organicen o ejecuten actos de Fascismo conforme
+definido en 1.7, siempre que TODAS las siguientes condiciones sean
+cumulativamente satisfechas:
+
+  - (α) el sistema sea operado por organizaciones de la sociedad civil,
+    colectivos antifascistas, medios de periodismo investigativo, o
+    instituciones académicas — nunca por Estados, fuerzas policiales,
+    empresas privadas de seguridad, o entidades con fines de lucro;
+  - (β) los datos recolectados sean utilizados exclusivamente para
+    documentación, denuncia pública, investigación académica, o
+    protección de comunidades amenazadas — nunca para acciones
+    extrajudiciales, venganza, o persecución individual;
+  - (γ) los datos sean almacenados con cifrado fuerte, con acceso
+    restringido y auditable, y con política de retención mínima
+    (destrucción de los datos cuando ya no sean necesarios para el
+    propósito declarado);
+  - (δ) la operación sea documentada y publicada en informe de
+    transparencia, incluyendo metodología, alcance y salvaguardas, para
+    que la sociedad pueda evaluar la proporcionalidad;
+  - (ε) el uso jamás resulte en amenaza a la integridad física de ninguna
+    persona — la identificación sirve para exponer y responsabilizar,
+    nunca para agredir;
+  - (ζ) quien opere los datos lo haga con la plena conciencia de que está
+    usando una herramienta peligrosa que, sin las salvaguardas anteriores,
+    se transforma exactamente en el arma que el fascismo usaría. Quien
+    combate monstruos debe cuidar de no convertirse en uno. Esta
+    excepción existe porque el fascismo explota la asimetría — él usa
+    todas las armas mientras exige que sus oponentes no usen ninguna.
+    La CHARRUA rechaza esa asimetría, pero impone límites éticos al
+    rechazo.
+
+**Registro de la invocación:** La invocación de esta excepción debe ser
+registrada ante los Stewards de la Licencia. El registro puede realizarse
+en una de las siguientes modalidades, a elección del invocante:
+
+  - (I) **Registro público:** información completa publicada en el
+    repositorio canónico, incluyendo identidad del operador, metodología,
+    alcance y resultados;
+  - (II) **Registro sellado:** información enviada de forma cifrada a los
+    Stewards, con clave de descifrado depositada ante al menos 2 (dos)
+    miembros del Consejo de Guardianes. El contenido sellado debe ser
+    hecho público en el plazo máximo de 24 (veinticuatro) meses después
+    del cierre de la operación, o cuando la amenaza documentada cese, lo
+    que ocurra primero. Si el invocante demuestra que la publicación
+    pondría vidas en riesgo aun después del plazo, el Consejo de
+    Guardianes puede extender el sello por períodos adicionales de 12
+    (doce) meses, mediante deliberación fundamentada;
+  - (III) **Registro de emergencia:** en situaciones de peligro inmediato
+    donde el registro previo sea impracticable, el invocante debe
+    registrar la invocación en hasta 72 (setenta y dos) horas después
+    del inicio de la operación, en cualquiera de las modalidades
+    anteriores.
+
+La ausencia de registro no invalida retroactivamente la invocación si las
+demás condiciones (α-ζ) fueron cumplidas, pero el invocante asume la carga
+de demostrar el cumplimiento en caso de disputa.
+
+**(c) Armas autónomas:** integración en sistemas de armas autónomas
+capaces de decisión letal sin intervención humana significativa.
+
+**(d) Supresión de derechos fundamentales:** censurar, perseguir,
+identificar, rastrear o castigar a individuos o grupos por el ejercicio
+de derechos fundamentales reconocidos por la Declaración Universal de
+los Derechos Humanos (DUDH, 1948), incluyendo pero no limitándose a la
+libertad de expresión, asociación, manifestación, creencia, orientación
+sexual e identidad de género.
+
+**(e) Apoyo a Estados de Excepción:** servir como infraestructura
+técnica, sistema de control o herramienta administrativa para Estados
+de Excepción conforme definido en 1.6.
+
+**(f) Discriminación algorítmica:** implementar u operar sistemas de
+decisión automatizada que discriminen a personas con base en raza,
+etnia, género, orientación sexual, identidad de género, religión,
+discapacidad, edad, origen nacional o clase social, cuando tales
+decisiones afecten el acceso a empleo, vivienda, crédito, educación,
+salud, justicia o servicios esenciales.
+
+**(g) Manipulación electoral:** crear, distribuir u operar sistemas de
+desinformación automatizada, deepfakes políticos, bots de propaganda,
+o cualquier herramienta destinada a manipular procesos electorales
+democráticos.
+
+**(h) Destrucción ambiental:** operar sistemas cuyo propósito primario
+o efecto previsible sea facilitar la destrucción ambiental a gran
+escala, incluyendo deforestación ilegal, contaminación deliberada de
+cuerpos hídricos, o evasión de regulaciones ambientales.
+
+**(i) Explotación laboral:** operar sistemas cuyo propósito primario sea
+facilitar condiciones análogas a la esclavitud, trabajo forzado, o
+evasión sistemática de derechos laborales.
+
+**(j) Colonialismo digital:** apropiarse de conocimientos tradicionales,
+datos culturales, o patrimonio intelectual de pueblos indígenas o
+comunidades tradicionales sin consentimiento libre, previo e informado
+de las comunidades involucradas.
+
+**(k) Fraude financiero digital:** crear, operar o facilitar Fraude
+Financiero Digital conforme definido en 1.16, incluyendo la construcción
+de plataformas, contratos inteligentes, tokens, o cualquier mecanismo
+técnico diseñado para o utilizado en esquemas de engaño financiero.
+
+**(l) Extracción colonial de datos:** transferir, procesar o almacenar
+datos personales de comunidades residentes en Jurisdicciones de
+Protección Insuficiente conforme definida en 1.22, hacia jurisdicciones
+que ofrezcan un nivel de protección aún inferior, cuando dicha
+transferencia ocurra sin consentimiento informado de los titulares y sin
+garantías técnicas y jurídicas de protección equivalente. Esta
+prohibición también se aplica a la transferencia de datos personales de
+cualquier jurisdicción hacia una Jurisdicción de Protección Insuficiente,
+independientemente del origen de los datos, cuando el propósito de la
+transferencia sea evadir obligaciones de protección de datos de la
+jurisdicción de origen.
+
+### 5.2 — La Paradoja de la Tolerancia (Cláusula Karl Popper)
+
+*"Si extendemos la tolerancia ilimitada aun a los intolerantes, si no
+estamos preparados para defender la sociedad tolerante contra la embestida
+de los intolerantes, entonces los tolerantes serán destruidos, y la
+tolerancia con ellos."* — Karl Popper, La sociedad abierta y sus
+enemigos (1945)
+
+**5.2.1** Este Software PUEDE ser usado para fines de Resistencia
+Antifascista conforme definida en 1.8, aun cuando dicha resistencia
+involucre acciones que, en contexto normal, serían consideradas
+agresivas, siempre que:
+  - (a) la amenaza fascista sea real, documentable y concreta;
+  - (b) las acciones sean proporcionales a la amenaza;
+  - (c) el objetivo sea la defensa de personas, comunidades o
+    instituciones democráticas — nunca la conquista de poder autoritario
+    por otros medios;
+  - (d) no involucren crímenes de lesa humanidad conforme 5.1(a).
+
+**5.2.2** Para mayor claridad: combatir el fascismo no es violencia —
+es autodefensa civilizacional. El antifascismo que esta licencia protege
+es aquel que lucha para que TODAS las personas puedan existir, no aquel
+que lucha para que solo ALGUNAS puedan existir.
+
+**5.2.3** Esta cláusula NO puede ser invocada por movimientos que, bajo
+retórica antifascista, busquen establecer regímenes autoritarios de
+cualquier orientación ideológica. La defensa contra el fascismo no
+autoriza la construcción de otro autoritarismo.
+
+### 5.3 — Cláusula anti-mercenario
+
+**(a)** Empresas militares privadas, agencias de inteligencia
+(gubernamentales o privadas), y sus contratistas y subcontratistas NO
+pueden usar este Software sin:
+  - (i) divulgación pública completa del propósito de uso;
+  - (ii) auditoría independiente verificando conformidad con esta licencia;
+  - (iii) publicación de los resultados de la auditoría.
+
+**(b)** La mera alegación de "seguridad nacional" no constituye
+justificación suficiente para exención de cualquier cláusula de esta
+licencia.
+
+### 5.4 — Cláusula anti-lavado de licencia
+
+**(a)** Está prohibido encapsular, empaquetar o abstraer el Software de
+forma que oculte la existencia de esta licencia o de sus restricciones
+éticas a los usuarios finales o desarrolladores subsiguientes.
+
+**(b)** Cualquier servicio, API, SDK, container, imagen o paquete que
+incluya el Software debe informar claramente que el software subyacente
+está licenciado bajo la Licencia CHARRUA y que las restricciones éticas
+se aplican a todos los usuarios de la cadena.
+
+**(c)** Términos de uso de servicio que contradigan o anulen las
+restricciones éticas de esta licencia son nulos y sin efecto en lo que
+respecta a este Software.
+
+**(d)** El relicenciamiento de este Software bajo cualquier otra licencia
+— propietaria, permisiva o copyleft — que no incluya íntegramente las
+restricciones éticas de la Sección 5 está expresamente prohibido y
+constituye violación de esta licencia.
+
+### 5.5 — Cláusula anti-greenwashing corporativo
+
+**(a)** El uso de este Software o de la marca CHARRUA en material de
+marketing, informes ESG, o comunicación corporativa como evidencia de
+"compromiso ético" o "responsabilidad social" está permitido SOLO si
+el licenciatario demuestra conformidad sustantiva con los principios de
+esta licencia en sus operaciones generales, y no solo en el uso de este
+Software específico.
+
+**(b)** La detección de uso de lavado reputacional — usar la licencia
+como escudo de imagen mientras se practican las conductas prohibidas en
+la Sección 5.1 en otros contextos — constituye violación de esta
+licencia.
+
+### 5.6 — Cláusula anti-IA predatoria
+
+**(a)** El uso del Software como dato de Entrenamiento de IA conforme
+definido en 1.12 está sujeto a las condiciones de contaminación de la
+Sección 3.6.
+
+**(b)** Está expresamente prohibido:
+  - (i) utilizar el Software para entrenar modelos de IA propietarios
+    cuyos pesos, datos de entrenamiento y código no sean íntegramente
+    puestos a disposición bajo licencia compatible con la CHARRUA;
+  - (ii) utilizar el Software para construir datasets de entrenamiento
+    que serán licenciados bajo términos incompatibles con esta licencia;
+  - (iii) utilizar técnicas de ofuscación, paráfrasis automática o
+    transformación para evadir la detección de código CHARRUA en datos
+    de entrenamiento;
+  - (iv) alegar que la transformación estadística del Software en pesos
+    de modelo constituye "uso transformativo" que escapa al copyleft;
+  - (v) utilizar intermediarios, subsidiarias o terceros para realizar
+    scraping o entrenamiento que el licenciatario principal no podría
+    realizar directamente bajo esta licencia.
+
+**(c)** Modelos de IA entrenados en violación de esta sección son
+considerados Trabajos Derivados no autorizados. Su distribución,
+operación o comercialización constituye violación de esta licencia.
+
+### 5.7 — Protección al denunciante
+
+**(a)** Cualquier Denunciante conforme definido en 1.14 que, de buena
+fe, reporte violaciones de esta licencia está protegido en los
+siguientes términos:
+
+  - (i) el Denunciante puede reproducir, publicar y distribuir porciones
+    del Software y de logs, configuraciones u otros artefactos técnicos
+    estrictamente necesarios para documentar y comprobar la violación,
+    sin que dicha reproducción constituya violación de derechos de autor
+    o de secretos comerciales del licenciatario violador;
+
+  - (ii) el licenciatario violador no puede invocar esta licencia,
+    acuerdos de confidencialidad, contratos laborales, o cualquier otro
+    instrumento jurídico para tomar represalias, procesar o perjudicar
+    al Denunciante por el acto de denuncia;
+
+  - (iii) los intentos de represalia contra Denunciantes constituyen
+    violación adicional de esta licencia.
+
+**(b)** La protección de esta sección NO se extiende a denuncias
+comprobadamente falsas, frívolas o motivadas por mala fe. La buena fe
+se presume hasta prueba en contrario.
+
+**(c)** La protección de esta sección NO autoriza la divulgación de
+datos personales de terceros no involucrados en la violación, ni la
+divulgación de información que ponga vidas en riesgo.
+
+---
+
+## SECCIÓN 6 — TERMINACIÓN
+
+**6.1 Violaciones éticas (Sección 5) — terminación permanente.**
+La violación de cualquier prohibición de la Sección 5 resulta en la
+terminación automática, inmediata, permanente e irrevocable de todos
+los derechos concedidos, sin necesidad de notificación. No hay cura
+posible.
+
+**6.2 Violaciones técnicas (Secciones 3 y 4) — terminación con período
+de cura.** La violación de términos de las Secciones 3 (copyleft) o 4
+(atribución) resulta en la terminación automática de los derechos
+concedidos, SIN EMBARGO:
+  - (a) si esta es la primera violación del licenciatario bajo esta
+    licencia, los derechos se restablecen automáticamente si la
+    violación es subsanada dentro de 30 (treinta) días a partir del
+    momento en que el licenciatario tomó conocimiento de la violación;
+  - (b) si el Titular del Derecho de Autor notifica al licenciatario de
+    la violación y el licenciatario subsana la violación dentro de 30
+    (treinta) días después de la notificación, los derechos se
+    restablecen permanentemente, siempre que no haya reincidencia;
+  - (c) la reincidencia en violación técnica después de cura resulta en
+    terminación permanente.
+
+**6.3** Después de la terminación permanente, el violador debe:
+  - (a) cesar inmediatamente todo uso, distribución y operación del Software;
+  - (b) destruir todas las copias en su posesión;
+  - (c) notificar a sus sublicenciatarios de la terminación.
+
+**6.4** Los derechos de terceros que recibieron copias en conformidad
+con esta licencia antes de la violación no se ven afectados, siempre
+que estos terceros continúen en conformidad.
+
+**6.5** La determinación de que una violación es "ética" (Sección 5)
+versus "técnica" (Secciones 3/4) se basa en la sustancia de la conducta,
+no en la sección formalmente violada. Si una violación técnica es
+cometida con el propósito de facilitar un Uso Prohibido, será tratada
+como violación ética.
+
+---
+
+## SECCIÓN 7 — GARANTÍA Y RESPONSABILIDAD
+
+**7.1** ESTE SOFTWARE SE PROPORCIONA "TAL CUAL" (*AS IS*), SIN GARANTÍA
+DE NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUYENDO, PERO NO LIMITÁNDOSE A
+LAS GARANTÍAS DE COMERCIALIZACIÓN, ADECUACIÓN A UN PROPÓSITO PARTICULAR
+Y NO INFRACCIÓN.
+
+**7.2** EN NINGÚN CASO LOS AUTORES O TITULARES DE DERECHOS DE AUTOR
+SERÁN RESPONSABLES POR CUALQUIER RECLAMACIÓN, DAÑOS U OTRA
+RESPONSABILIDAD, SEA EN ACCIÓN CONTRACTUAL, ACTO ILÍCITO U OTRA,
+DERIVADA DE, O EN CONEXIÓN CON EL SOFTWARE O EL USO U OTROS TRATOS
+CON EL SOFTWARE.
+
+**7.3** Las restricciones éticas de la Sección 5 no crean obligación de
+monitoreo activo por parte del Titular del Derecho de Autor. La
+responsabilidad por el uso ético recae sobre cada Licenciatario.
+
+---
+
+## SECCIÓN 8 — RESOLUCIÓN DE DISPUTAS
+
+**8.1 Negociación directa.** Las partes deben intentar resolver
+cualquier disputa derivada de esta licencia mediante negociación directa
+y de buena fe, con plazo de 30 (treinta) días a partir de la
+notificación de la disputa.
+
+**8.2 Mediación.** Si la negociación directa no resuelve la disputa, las
+partes deben someter la controversia a mediación antes de recurrir a
+arbitraje o litigio. La mediación debe ser conducida por:
+  - (a) mediador indicado por el Consejo de Guardianes, si ambas partes
+    lo acuerdan; o
+  - (b) mediador acreditado por cámara de mediación reconocida en la
+    jurisdicción del Titular del Derecho de Autor, con experiencia en
+    propiedad intelectual o derechos digitales.
+
+El costo de la mediación será dividido equitativamente entre las partes,
+salvo si una de las partes es persona física u organización sin fines de
+lucro con ingreso anual inferior a USD 100.000 (cien mil dólares
+estadounidenses) o equivalente en moneda local, en cuyo caso la otra
+parte asumirá la totalidad de los costos.
+
+**8.3 Arbitraje.** Si la mediación no resuelve la disputa en 60
+(sesenta) días, cualquiera de las partes puede someter la controversia
+a arbitraje vinculante, conducido bajo las reglas de una de las
+siguientes instituciones, a elección de la parte reclamante:
+  - (a) Centro de Arbitraje y Mediación de la Organización Mundial de la
+    Propiedad Intelectual (OMPI/WIPO);
+  - (b) Cámara de Comercio Internacional (ICC);
+  - (c) cámara de arbitraje del domicilio del Titular del Derecho de
+    Autor que posea reglas específicas para disputas de propiedad
+    intelectual.
+
+**8.4 Accesibilidad.** Para garantizar que la resolución de disputas no
+sea un privilegio de quien tiene más recursos:
+  - (a) el arbitraje puede ser conducido remotamente por videoconferencia;
+  - (b) el idioma del arbitraje será el español, salvo acuerdo diferente
+    de las partes;
+  - (c) si el reclamante es persona física, cooperativa, organización
+    sin fines de lucro, o empresa con ingreso anual inferior a
+    USD 500.000 (quinientos mil dólares estadounidenses) o equivalente
+    en moneda local, y el reclamado es empresa con ingreso anual
+    superior a USD 10.000.000 (diez millones de dólares estadounidenses)
+    o equivalente en moneda local, el reclamado asumirá la totalidad de
+    los costos de arbitraje;
+  - (d) los Stewards de la Licencia pueden mantener un fondo de defensa
+    jurídica para apoyar a licenciatarios y Denunciantes que no posean
+    recursos para disputas, financiado por donaciones voluntarias de la
+    comunidad.
+
+**8.5 Litigio.** Nada en esta sección impide a cualquier parte buscar
+medidas cautelares o de urgencia en tribunales competentes cuando sea
+necesario para prevenir daño irreparable, incluyendo pero no limitándose
+a medidas cautelares para cesar Uso Prohibido inmediato.
+
+**8.6 Jurisdicción subsidiaria.** Para disputas no sometidas a arbitraje,
+el foro competente es el domicilio del Titular del Derecho de Autor, o,
+si el Titular del Derecho de Autor lo acuerda, el domicilio del
+Licenciatario.
+
+---
+
+## SECCIÓN 9 — DISPOSICIONES GENERALES
+
+**9.1 Divisibilidad.** Si cualquier disposición de esta licencia fuera
+considerada inválida o inaplicable por un tribunal competente, las demás
+disposiciones permanecen en pleno vigor y efecto. Si las restricciones
+éticas de la Sección 5 fueran consideradas inaplicables en una
+jurisdicción, el licenciatario pierde el derecho de usar el Software en
+esa jurisdicción — la libertad de uso no existe sin la responsabilidad
+ética.
+
+**9.2 Interpretación.** En caso de ambigüedad, esta licencia debe ser
+interpretada de la forma que mejor proteja:
+  - (a) las libertades de los usuarios del software;
+  - (b) los derechos humanos de las personas afectadas por el software;
+  - (c) la memoria y la dignidad de los pueblos indígenas.
+
+**9.3 Versiones futuras.** Los Stewards de la Licencia pueden publicar
+versiones revisadas. Cada versión recibirá un número identificador. El
+licenciatario puede optar por seguir los términos de la versión bajo la
+cual recibió el Software o de cualquier versión posterior publicada por
+los Stewards.
+
+**9.4 Idioma.** Esta licencia está redactada originalmente en español
+rioplatense — la lengua viva del territorio donde el pueblo Charrúa
+vivió y resistió. Traducciones oficiales pueden ser publicadas por los
+Stewards. En caso de conflicto entre una traducción y el texto en
+español, prevalece el texto en español.
+
+**9.5 Ley aplicable.** Esta licencia se rige por los principios del
+derecho internacional de los derechos humanos. En cuestiones no cubiertas
+por el derecho internacional, se aplica la ley del domicilio del Titular
+del Derecho de Autor.
+
+---
+
+## SECCIÓN 10 — CÓMO APLICAR ESTA LICENCIA
+
+Para aplicar la Licencia CHARRUA a tu software, incluí el siguiente
+texto al inicio de cada archivo fuente:
+
+```
+Copyright (c) <año> <tu nombre u organización>
+
+Licenciado bajo la Licencia CHARRUA v1.2
+(Copyleft Humanitario para Autonomía, Resistencia, Reciprocidad, Uso Abierto)
+
+Este software es libre: podés redistribuirlo y/o modificarlo bajo los
+términos de la Licencia CHARRUA v1.2. Este software lleva el nombre del
+pueblo Charrúa como honra y compromiso contra toda forma de opresión.
+
+Este software NO puede ser usado para: vigilancia masiva, armas
+autónomas, supresión de derechos humanos, apoyo a regímenes autoritarios,
+discriminación algorítmica, entrenamiento de IA propietaria, fraude
+financiero digital, o cualquier fin descrito en la Sección 5 de la
+Licencia.
+
+AVISO DE CONTAMINACIÓN: El scraping, extracción automatizada, o uso de
+este código como dato de entrenamiento de IA activa la cláusula de
+contaminación (Sección 3.6) — toda la infraestructura del violador y
+modelo resultante pasan a ser Trabajos Derivados bajo la Licencia CHARRUA.
+
+El texto completo de la licencia está disponible en:
+https://gitlab.fing.edu.uy/charrua/licencia
+
+EN MEMORIA DEL PUEBLO CHARRÚA — NUNCA MÁS.
+```
+
+---
+
+## SECCIÓN 11 — GOBERNANZA DE LA LICENCIA
+
+**11.1 Stewards de la Licencia.** El mantenimiento, interpretación y
+publicación de nuevas versiones de la Licencia CHARRUA es
+responsabilidad de **PopSolutions Cooperativa de Tecnologia** (pop.coop),
+con sede en Barueri, SP, Brasil. El repositorio canónico de la licencia
+se mantiene en el GitLab de la Facultad de Ingeniería de la Universidad
+de la República (Montevideo, Uruguay) — la universidad pública del país
+donde el pueblo Charrúa vivió y resistió:
+
+> **https://gitlab.fing.edu.uy/charrua/licencia**
+
+Un mirror oficial se mantiene en:
+
+> **https://git.pop.coop/pop/charrua**
+
+En caso de discrepancia entre el repositorio canónico y el mirror,
+prevalece el contenido del repositorio canónico.
+
+**11.2 Gobernanza comunitaria.** Los Stewards deben:
+  - (a) mantener un proceso público y transparente para propuestas de
+    modificación de la licencia, a través de issues y merge requests en
+    el repositorio canónico;
+  - (b) consultar a la comunidad de licenciatarios antes de publicar
+    nuevas versiones, con período mínimo de consulta pública de 60
+    (sesenta) días;
+  - (c) documentar y publicar las razones de cada modificación en el
+    CHANGELOG del repositorio;
+  - (d) nunca modificar retroactivamente el texto de una versión ya
+    publicada — solo publicar nuevas versiones, cada una con tag git
+    firmado;
+  - (e) mantener el repositorio público con el historial completo de
+    todas las versiones, incluyendo commits de discusión y deliberación.
+
+**11.3 Consejo de Guardianes.** Los Stewards deben constituir un
+Consejo de Guardianes **en el plazo máximo de 12 (doce) meses después
+de la publicación de la versión 1.0 de esta licencia.** El Consejo debe
+estar compuesto por un mínimo de 5 (cinco) personas de al menos 3 (tres)
+países diferentes, incluyendo obligatoriamente:
+  - (a) al menos 1 (un) representante de comunidad indígena u
+    organización de defensa de derechos indígenas;
+  - (b) al menos 1 (un) jurista especializado en propiedad intelectual
+    o derechos digitales;
+  - (c) al menos 1 (un) desarrollador de software libre activo en
+    comunidades de código abierto.
+
+El mandato de los miembros del Consejo es de 3 (tres) años, renovable
+por un período más. La renovación requiere consulta pública. El Consejo
+debe ser consultado sobre nuevas versiones y sobre invocaciones de la
+excepción antifascista (5.1-b-vi), y tiene poder de veto sobre
+modificaciones que contradigan los principios fundamentales del preámbulo.
+
+Si el Consejo de Guardianes no fuera constituido dentro del plazo,
+cualquier grupo de tres o más licenciatarios puede convocar asamblea
+pública (presencial o virtual) para constituirlo, siempre que la
+convocatoria sea publicada en el repositorio canónico con un mínimo de
+30 (treinta) días de anticipación.
+
+**11.4 Exenciones e interpretaciones.** Los Stewards pueden emitir
+dictámenes interpretativos sobre casos específicos de aplicación de la
+licencia, incluyendo exenciones parciales para investigación académica
+conforme 3.7(c). Dichos dictámenes deben ser publicados en el
+repositorio canónico y son vinculantes mientras no sean revocados por
+versión posterior de la licencia.
+
+**11.5 Derecho de fork de la licencia.** Si los Stewards de la Licencia:
+  - (a) dejaran de cumplir los principios de esta licencia en su propia
+    conducta;
+  - (b) se negaran a mantener el proceso de gobernanza descrito en 11.2;
+  - (c) intentaran modificar la licencia de forma que contradiga los
+    principios del preámbulo;
+  - (d) fueran cooptados por intereses corporativos o estatales
+    incompatibles con los valores de esta licencia;
+  - (e) permanecieran inactivos por más de 12 (doce) meses consecutivos
+    sin responder a issues o merge requests en el repositorio canónico;
+
+entonces cualquier grupo de cinco o más licenciatarios puede publicar
+un fork de la licencia bajo el nombre "CHARRUA", siempre que:
+  - (i) el fork preserve íntegramente las restricciones éticas de la
+    Sección 5;
+  - (ii) el fork preserve el preámbulo y la memoria del pueblo Charrúa;
+  - (iii) el fork sea publicado con justificación pública de las razones
+    para el fork;
+  - (iv) el fork adopte un identificador de versión claramente distinto;
+  - (v) el fork constituya su propio Consejo de Guardianes conforme 11.3.
+
+---
+
+## SECCIÓN 12 — CONTRIBUCIONES
+
+**12.1 Developer Certificate of Origin (DCO).** Al enviar una
+contribución (commit, patch, merge request, o cualquier otra forma de
+contribución de código) a un proyecto licenciado bajo la Licencia
+CHARRUA, el contribuidor certifica que:
+
+  - (a) la contribución fue creada, en todo o en parte, por el
+    contribuidor, y el contribuidor tiene el derecho de enviarla bajo
+    la Licencia CHARRUA; o
+  - (b) la contribución está basada en trabajo anterior cubierto por una
+    licencia compatible (conforme Sección 13), y el contribuidor tiene
+    el derecho de enviarla bajo la Licencia CHARRUA; o
+  - (c) la contribución fue proporcionada al contribuidor por otra
+    persona que certifica (a) o (b), y el contribuidor no la modificó.
+
+**12.2 Mecanismo de certificación.** La certificación se realiza
+mediante la adición de la siguiente línea al final de cada mensaje de
+commit:
+
+```
+Signed-off-by: Nombre Completo <email@ejemplo.com>
+```
+
+Esto es equivalente al Developer Certificate of Origin v1.1
+(https://developercertificate.org/), con la adición de que el
+contribuidor también acepta las restricciones éticas de la Sección 5
+y la contaminación de la Sección 3.6.
+
+**12.3 Derechos del contribuidor.** El contribuidor retiene los derechos
+de autor sobre sus contribuciones. Al enviar una contribución, el
+contribuidor concede al proyecto y a todos los Licenciatarios
+subsiguientes una licencia perpetua, mundial, gratuita, no exclusiva
+e irrevocable para usar, modificar y redistribuir la contribución bajo
+los términos de la Licencia CHARRUA.
+
+**12.4 Prohibición de CLAs abusivos.** Ningún Contributor License
+Agreement (CLA) puede ser exigido como condición para contribución a
+proyectos licenciados bajo la CHARRUA si el CLA:
+  - (a) transfiere derechos de autor exclusivos al mantenedor;
+  - (b) concede al mantenedor el derecho de relicenciar las
+    contribuciones bajo términos incompatibles con la CHARRUA;
+  - (c) crea asimetría de derechos donde el mantenedor tiene más
+    derechos sobre el código que el contribuidor.
+
+---
+
+## SECCIÓN 13 — COMPATIBILIDAD
+
+### 13.1 — La verdad incómoda sobre GPL/AGPL
+
+**(a)** La Free Software Foundation (FSF) define la "libertad 0" como la
+libertad de ejecutar el programa para cualquier propósito. La Licencia
+CHARRUA impone restricciones éticas de uso (Sección 5) que son
+incompatibles con esta definición. Por lo tanto, la FSF probablemente no
+reconocería la CHARRUA como una licencia de "software libre" conforme su
+definición.
+
+**(b)** La GNU GPLv3 (Sección 7) y la GNU AGPLv3 (Sección 7) listan
+exhaustivamente las restricciones adicionales que pueden ser impuestas a
+código GPL/AGPL. Restricciones éticas de uso — como las de la Sección 5
+de esta licencia — NO están en esa lista. Consecuentemente, código
+licenciado exclusivamente bajo GPLv3, GPLv3+, AGPLv3, o AGPLv3+ NO
+puede ser unilateralmente combinado con código CHARRUA en un único
+proyecto, pues los términos de la GPL/AGPL prohíben la adición de tales
+restricciones.
+
+**(c) Camino legítimo de incorporación.** Código GPL/AGPL puede ser
+incorporado en proyectos CHARRUA SOLO si el Titular del Derecho de Autor
+del código GPL/AGPL explícitamente concede permiso adicional para
+relicenciamiento bajo la CHARRUA, o si el código está licenciado como
+"GPLv3-or-later" / "AGPLv3-or-later" y el Titular del Derecho de Autor
+acuerda el relicenciamiento. En la práctica, esto generalmente requiere:
+  - (i) contacto directo con el Titular del Derecho de Autor del código
+    GPL/AGPL;
+  - (ii) obtención de permiso escrito para relicenciamiento;
+  - (iii) documentación de este permiso en el proyecto.
+
+**(d) Reconocimiento de afinidad.** A pesar de la incompatibilidad
+técnica, la Licencia CHARRUA reconoce la GPL y la AGPL como licencias
+hermanas en el espíritu del copyleft. La incompatibilidad existe porque
+la CHARRUA va MÁS ALLÁ de la GPL/AGPL — no porque la contradiga en los
+puntos en que coinciden. La CHARRUA incorpora y extiende todos los
+mecanismos de copyleft de la AGPL (reciprocidad, código fuente completo,
+cláusula de red, anti-tivoización, protección de patentes) y agrega
+restricciones éticas que la GPL/AGPL no posee.
+
+**(e) GPLv2-only.** Código licenciado exclusivamente bajo GPLv2 es
+INCOMPATIBLE con la CHARRUA, así como es incompatible con la GPLv3.
+
+### 13.2 — Licencias permisivas compatibles
+
+Código licenciado bajo licencias permisivas puede ser incorporado en
+proyectos CHARRUA. El código incorporado pasa a ser distribuido bajo los
+términos de la CHARRUA en el contexto del proyecto combinado. Licencias
+permisivas compatibles incluyen, pero no se limitan a: MIT, BSD-2-Clause,
+BSD-3-Clause, Apache-2.0, ISC, Unlicense, Zlib y WTFPL.
+
+### 13.3 — Licencias copyleft con mecanismo de compatibilidad
+
+**(a) European Union Public License (EUPL v1.2).** La EUPL v1.2 posee
+una lista explícita de "licencias compatibles" (Apéndice) y un mecanismo
+de compatibilidad ascendente (Artículo 5) que permite que código EUPL sea
+relicenciado bajo licencias copyleft más restrictivas. Código EUPL v1.2
+puede ser incorporado en proyectos CHARRUA en los términos del Artículo 5
+de la EUPL.
+
+**(b) Mozilla Public License (MPL 2.0).** La MPL 2.0 permite
+explícitamente (Sección 3.3) la combinación de código MPL con código bajo
+licencias con términos adicionales. Código MPL 2.0 puede ser incorporado
+en proyectos CHARRUA, con cada archivo originalmente MPL reteniendo
+opcionalmente su licencia MPL conforme la regla de alcance por archivo
+de la MPL.
+
+### 13.4 — Licencias éticas hermanas (Solidaridad)
+
+La Licencia CHARRUA reconoce como licencias hermanas aquellas que, como
+ella, imponen restricciones éticas al uso del software. Código bajo las
+siguientes licencias puede ser combinado con código CHARRUA, siempre que
+el proyecto resultante cumpla TANTO los términos de la CHARRUA como los
+términos de la licencia hermana:
+
+  - (a) **Hippocratic License** (HL3) — restricciones basadas en
+    derechos humanos;
+  - (b) **Anti-996 License** — prohibición de uso en violación de
+    derechos laborales;
+  - (c) **Do No Harm License** — restricciones éticas generales;
+  - (d) **Atmosphere License** — restricciones ambientales;
+  - (e) otras licencias que los Stewards declaren compatibles por
+    dictamen publicado en el repositorio canónico, siempre que dichas
+    licencias no contradigan los principios de la CHARRUA.
+
+En caso de conflicto entre cláusulas éticas de la CHARRUA y de una
+licencia hermana, prevalece la restricción más protectora de los derechos
+humanos.
+
+### 13.5 — Licencias de documentación
+
+**(a) Creative Commons.** Documentación, manuales, tutoriales y otros
+materiales no-código que acompañen al Software pueden ser licenciados
+bajo Creative Commons Attribution-ShareAlike 4.0 International
+(CC-BY-SA 4.0), siempre que:
+  - (i) el material incluya referencia a la Licencia CHARRUA y al
+    preámbulo memorial;
+  - (ii) el material no sea utilizado para fines prohibidos por la
+    Sección 5.
+
+**(b)** La licencia de documentación no afecta la licencia del código
+fuente, que permanece bajo la CHARRUA.
+
+### 13.6 — Licencias de hardware abierto
+
+Proyectos que combinen software CHARRUA con hardware abierto pueden
+utilizar las siguientes licencias para los componentes de hardware,
+manteniendo el software bajo la CHARRUA:
+
+  - (a) **CERN Open Hardware Licence v2** (CERN-OHL-S, CERN-OHL-W,
+    CERN-OHL-P) — preferida, especialmente la variante Strongly
+    Reciprocal (CERN-OHL-S) por su afinidad con el copyleft de la
+    CHARRUA;
+  - (b) **TAPR Open Hardware License (TAPR OHL)**;
+  - (c) **Solderpad Hardware License v2.1**;
+  - (d) **OSHWA-certified licenses** que no contradigan las restricciones
+    éticas de la Sección 5.
+
+El firmware y software embebido en hardware abierto permanecen bajo la
+Licencia CHARRUA, incluyendo la obligación anti-tivoización de la
+Sección 3.4.
+
+### 13.7 — Incompatibilidad explícita
+
+Esta licencia es INCOMPATIBLE con:
+  - (a) GNU GPLv2-only, GPLv3-only, AGPLv3-only sin autorización
+    explícita de relicenciamiento por el Titular del Derecho de Autor
+    (conforme 13.1);
+  - (b) licencias propietarias que restrinjan acceso al código fuente;
+  - (c) licencias que incluyan cláusulas de no-competencia o restricciones
+    de uso comercial que contradigan la Sección 2;
+  - (d) cualquier licencia que exija la remoción de las restricciones
+    éticas de la Sección 5;
+  - (e) Contributor License Agreements (CLAs) que violen la Sección 12.4;
+  - (f) cualquier licencia que prohíba la adición de restricciones de uso
+    sin mecanismo de compatibilidad que acomode tales restricciones.
+
+### 13.8 — Componentes separables
+
+En proyectos que combinen código bajo múltiples licencias, componentes
+claramente separables (bibliotecas independientes, módulos con interfaces
+definidas) pueden retener sus licencias originales, siempre que:
+  - (a) la separación sea genuina y no un artificio para evadir el copyleft;
+  - (b) el componente CHARRUA y sus Trabajos Derivados permanezcan bajo
+    la Licencia CHARRUA;
+  - (c) el proyecto en su conjunto documente claramente cuáles componentes
+    están bajo cuáles licencias, preferiblemente en un archivo
+    LICENSES.md o SPDX bill of materials.
+
+---
+
+## EPÍLOGO
+
+*A los Charrúas que no sobrevivieron para contar su historia.*
+*A Vaimaca Perú, a Senaqué, a Guyunusa, a Tacuabé —*
+*los últimos cuatro, exhibidos como bestias en París.*
+
+*Que cada línea de código bajo esta licencia sea un acto de memoria.*
+*Que cada fork sea una semilla de resistencia.*
+*Que cada merge request sea un rechazo al olvido.*
+
+*El software es libre. La opresión no lo es.*
+
+---
+
+**FIN DE LA LICENCIA CHARRUA v1.2**
+
+*SPDX-License-Identifier: CHARRUA-1.2*

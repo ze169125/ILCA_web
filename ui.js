@@ -1,4 +1,9 @@
-/* ui.js — canvas rendering (compass + heel) and DOM updates. */
+/* Copyright (c) 2026 PopSolutions Cooperativa
+ * SPDX-License-Identifier: CHARRUA-1.2
+ * Licença CHARRUA v1.2 — ver LICENSE ou https://gitlab.fing.edu.uy/charrua/licencia
+ *
+ * ui.js — canvas rendering (compass + heel) and DOM updates.
+ */
 (function () {
   'use strict';
 
