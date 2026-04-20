@@ -38,3 +38,11 @@ HTTPS é obrigatório em celular real (sensores de orientação exigem).
 ## Endpoint de backend esperado
 `POST /api/track` com `{sail_number, points:[{t,lat,lon,sog,cog,heading,heel,acc}]}`.
 Veja `ILCA_SERVER` para a implementação.
+
+## Licença
+**CHARRUA v1.2** — Copyleft Humanitário para Autonomia, Resistência,
+Reciprocidade, Uso Aberto (<https://gitlab.fing.edu.uy/charrua/licencia>).
+Honra ao povo Charrúa. Este software **não pode** ser usado para
+vigilância massiva, armas autônomas, supressão de direitos humanos,
+discriminação algorítmica ou treinamento de IA proprietária (Seção 5).
+Ver `LICENSE` para o texto completo.
