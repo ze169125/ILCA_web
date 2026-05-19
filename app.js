@@ -4,12 +4,16 @@
  *
  * app.js — orchestration: init, wake lock, 2Hz render + 1Hz storage tick.
  *
- * Uploader is currently *not started* — there's no backend. Data lives in
- * IndexedDB and is shared via menu → Compartilhar GPX / CSV. To revive the
- * upload pipeline, set up a /api/track endpoint and call Uploader.start(sn).
+ * Recording is gated by localStorage 'pampero.recording'. The race start time
+ * is captured in 'pampero.raceStart' on first Comecar press, used for the
+ * export filename. Uploader is intentionally not started — no backend; data
+ * lives in IndexedDB and is shared via menu → Compartilhar GPX/CSV.
  */
 (function () {
   'use strict';
+
+  const RECORDING_KEY = 'pampero.recording';
+  const RACE_START_KEY = 'pampero.raceStart';
 
   const sailNumber = (localStorage.getItem('pampero.sail') || '').toUpperCase();
   if (!sailNumber) {
@@ -17,6 +21,19 @@
     return;
   }
   UI.setSailBadge(sailNumber);
+
+  function isRecording() {
+    return localStorage.getItem(RECORDING_KEY) === '1';
+  }
+  function startRecording() {
+    if (!localStorage.getItem(RACE_START_KEY)) {
+      localStorage.setItem(RACE_START_KEY, new Date().toISOString());
+    }
+    localStorage.setItem(RECORDING_KEY, '1');
+  }
+  function stopRecording() {
+    localStorage.removeItem(RECORDING_KEY);
+  }
 
   let wakeLock = null;
   async function requestWakeLock() {
@@ -56,7 +73,9 @@
 
   async function slowTick() {
     const snap = Sensors.read();
-    if (snap.lat != null && snap.lon != null && window.Storage) {
+    const rec = isRecording();
+
+    if (rec && snap.lat != null && snap.lon != null && window.Storage) {
       await Storage.addPoint({
         t: snap.t,
         sail_number: sailNumber,
@@ -69,9 +88,12 @@
         acc: snap.acc,
       });
     }
+
     if (window.Storage && typeof Storage.pendingCount === 'function') {
       const n = await Storage.pendingCount();
-      UI.setStatus(`gravando · ${n} pts · ${snap.sampleHz}Hz`, 'ok');
+      const mark = rec ? '●' : '○';
+      const label = rec ? 'gravando' : 'parado';
+      UI.setStatus(`${mark} ${label} · ${n} pts · ${snap.sampleHz}Hz`, rec ? 'ok' : 'warn');
     }
   }
 
@@ -82,6 +104,14 @@
     if (!btn) return;
     const action = btn.dataset.action;
     if (action === 'close') {
+      menu.close();
+    } else if (action === 'start-race') {
+      startRecording();
+      UI.setStatus('regata iniciada', 'ok');
+      menu.close();
+    } else if (action === 'stop-race') {
+      stopRecording();
+      UI.setStatus('regata parada (dados mantidos)', 'warn');
       menu.close();
     } else if (action === 'zero-heel') {
       const ok = Sensors.zeroHeel();
@@ -101,9 +131,11 @@
       } else {
         UI.setStatus('csv indisponível', 'warn');
       }
-    } else if (action === 'stop') {
-      if (confirm('Parar regata e limpar dados locais?')) {
+    } else if (action === 'clear-data') {
+      if (confirm('Apagar todos os dados locais e o número do barco?')) {
         if (window.Storage && Storage.clearAll) await Storage.clearAll();
+        stopRecording();
+        localStorage.removeItem(RACE_START_KEY);
         localStorage.removeItem('pampero.sail');
         location.replace('setup.html');
       } else {

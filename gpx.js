@@ -44,8 +44,10 @@
     const points = await Storage.allPoints();
     const xml = buildGpx(sailNumber, points);
     const blob = new Blob([xml], { type: 'application/gpx+xml' });
-    const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
-    await Share.shareOrDownload(blob, `pampero-${sailNumber}-${stamp}.gpx`);
+    const startIso = localStorage.getItem('pampero.raceStart')
+      || (points[0] && points[0].t)
+      || new Date().toISOString();
+    await Share.shareOrDownload(blob, Share.nameForExport(sailNumber, 'gpx', new Date(startIso)));
   }
 
   window.GPX = { buildGpx, share };

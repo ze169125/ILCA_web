@@ -32,5 +32,13 @@
     return 'downloaded';
   }
 
-  window.Share = { shareOrDownload };
+  function nameForExport(sailNumber, ext, when) {
+    const d = when instanceof Date ? when : new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    const stamp = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}h${pad(d.getMinutes())}`;
+    const safe = String(sailNumber || 'sem-numero').replace(/[^A-Za-z0-9_-]/g, '-');
+    return `${safe}-${stamp}.${ext}`;
+  }
+
+  window.Share = { shareOrDownload, nameForExport };
 })();

@@ -170,6 +170,11 @@ dialog#menu button {
   border-radius: 8px;
 }
 dialog#menu button.secondary { background: transparent; color: var(--dim); }
+dialog#menu button.danger {
+  background: rgba(218, 18, 26, 0.12);
+  color: var(--puka);
+  border-color: rgba(218, 18, 26, 0.35);
+}
 
 /* Setup page (unchanged behavior, tightened look) */
 body.setup {

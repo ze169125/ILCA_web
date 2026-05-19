@@ -35,8 +35,10 @@
     const points = await Storage.allPoints();
     const text = buildCsv(points, sailNumber);
     const blob = new Blob([text], { type: 'text/csv' });
-    const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
-    await Share.shareOrDownload(blob, `pampero-${sailNumber}-${stamp}.csv`);
+    const startIso = localStorage.getItem('pampero.raceStart')
+      || (points[0] && points[0].t)
+      || new Date().toISOString();
+    await Share.shareOrDownload(blob, Share.nameForExport(sailNumber, 'csv', new Date(startIso)));
   }
 
   window.CSV = { buildCsv, share };
