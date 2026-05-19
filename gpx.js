@@ -39,21 +39,14 @@
     return parts.join('');
   }
 
-  async function download(sailNumber) {
+  async function share(sailNumber) {
     if (!window.Storage) return;
     const points = await Storage.allPoints();
     const xml = buildGpx(sailNumber, points);
     const blob = new Blob([xml], { type: 'application/gpx+xml' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
     const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
-    a.href = url;
-    a.download = `pampero-${sailNumber}-${stamp}.gpx`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    await Share.shareOrDownload(blob, `pampero-${sailNumber}-${stamp}.gpx`);
   }
 
-  window.GPX = { buildGpx, download };
+  window.GPX = { buildGpx, share };
 })();

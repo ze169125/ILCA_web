@@ -19,28 +19,36 @@
     <button id="menu-btn" aria-label="menu">≡</button>
   </header>
 
-  <section class="zone zone-compass">
-    <canvas id="compass" width="600" height="600"></canvas>
-    <div class="overlay"><span id="heading-val">---</span><span class="unit">°</span></div>
-    <div class="src" id="heading-src">&nbsp;</div>
-  </section>
+  <main class="readout">
+    <section class="row row-hdg">
+      <div class="label">HDG</div>
+      <div class="value"><span id="heading-val">---</span><span class="unit">°</span></div>
+      <div class="sub" id="heading-src">&nbsp;</div>
+    </section>
 
-  <section class="zone zone-heel">
-    <canvas id="heel" width="700" height="260"></canvas>
-    <div class="overlay">
-      <span id="heel-val">--</span><span class="unit">°</span>
-      <span id="heel-side" class="side"></span>
-    </div>
-  </section>
+    <section class="row row-heel">
+      <div class="label">HEEL</div>
+      <div class="value">
+        <span id="heel-val">--</span><span class="unit">°</span>
+        <span id="heel-side" class="side"></span>
+      </div>
+    </section>
 
-  <section class="zone zone-speed">
-    <div class="speed-big"><span id="sog-val">--</span><span class="unit">kn</span></div>
+    <section class="row row-sog">
+      <div class="label">SOG</div>
+      <div class="value"><span id="sog-val">--</span><span class="unit">kn</span></div>
+    </section>
+  </main>
+
+  <footer>
     <div id="status-line" class="ok">iniciando…</div>
-  </section>
+    <div id="debug-line" class="debug">ax -- ay -- az --</div>
+  </footer>
 
   <dialog id="menu">
     <button data-action="zero-heel">Zerar heel</button>
-    <button data-action="export-gpx">Exportar GPX</button>
+    <button data-action="share-gpx">Compartilhar GPX</button>
+    <button data-action="share-csv">Compartilhar CSV</button>
     <button data-action="stop">Parar regata</button>
     <button data-action="close" class="secondary">Fechar</button>
   </dialog>
@@ -48,8 +56,9 @@
   <script src="vendor/dexie.min.js"></script>
   <script src="sensors.js"></script>
   <script src="storage.js"></script>
-  <script src="uploader.js"></script>
+  <script src="share.js"></script>
   <script src="gpx.js"></script>
+  <script src="csv.js"></script>
   <script src="ui.js"></script>
   <script src="app.js"></script>
 </body>

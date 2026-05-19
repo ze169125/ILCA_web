@@ -2,12 +2,13 @@
  * SPDX-License-Identifier: CHARRUA-1.2
  * Licença CHARRUA v1.2 — ver LICENSE ou https://gitlab.fing.edu.uy/charrua/licencia
  *
- * Pampero — dark, high-contrast, Wiphala accents
+ * Pampero — dark, high-contrast, numbers-only.
  */
 :root {
   --bg: #0a0a0a;
-  --fg: #e8e8e8;
-  --dim: #8a8a8a;
+  --fg: #f4f4f4;
+  --dim: #6a6a6a;
+  --line: #1c1c1c;
   --qori: #FCDD09;   /* accent/active */
   --puka: #DA121A;   /* warn/error */
   --chux: #078930;   /* ok */
@@ -15,12 +16,11 @@
 
 * { box-sizing: border-box; }
 html, body {
-  margin: 0;
-  padding: 0;
+  margin: 0; padding: 0;
   height: 100%;
   background: var(--bg);
   color: var(--fg);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
   font-variant-numeric: tabular-nums;
   -webkit-text-size-adjust: 100%;
   overscroll-behavior: none;
@@ -31,7 +31,7 @@ html, body {
 
 body.live {
   display: grid;
-  grid-template-rows: 48px 1fr 1fr 1fr;
+  grid-template-rows: 44px 1fr 44px;
   height: 100vh;
   height: 100dvh;
 }
@@ -40,88 +40,110 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 12px;
-  border-bottom: 1px solid #222;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--line);
 }
 #sail-badge {
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   color: var(--qori);
+  font-size: 15px;
 }
 #menu-btn {
   background: transparent;
-  border: 1px solid #333;
+  border: 1px solid #2a2a2a;
   color: var(--fg);
-  font-size: 22px;
+  font-size: 20px;
   line-height: 1;
-  width: 40px; height: 32px;
+  width: 40px; height: 30px;
   border-radius: 6px;
 }
 
-.zone {
+.readout {
+  display: grid;
+  grid-template-rows: 1.4fr 1fr 1.4fr;
+  min-height: 0;
+}
+.row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  padding: 8px 12px;
+  min-height: 0;
 }
-.zone canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-.overlay {
+.row:last-child { border-bottom: none; }
+
+.label {
   position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-.zone-compass .overlay { font-size: 56px; }
-.zone-heel .overlay    { font-size: 40px; }
-.unit {
-  font-size: 0.55em;
+  top: 8px; left: 14px;
+  font-size: 12px;
+  letter-spacing: 0.22em;
   color: var(--dim);
-  margin-left: 4px;
+  font-weight: 600;
+}
+.value {
+  font-size: clamp(72px, 22vw, 180px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.04em;
+}
+.unit {
+  font-size: 0.32em;
+  color: var(--dim);
   font-weight: 500;
+  margin-left: 0.08em;
 }
 .side {
-  font-size: 0.55em;
+  font-size: 0.28em;
   color: var(--qori);
-  margin-left: 10px;
+  font-weight: 700;
+  margin-left: 0.25em;
+  letter-spacing: 0.04em;
 }
-.src {
+.sub {
   position: absolute;
-  top: 6px; right: 10px;
+  bottom: 8px; right: 14px;
   font-size: 11px;
   color: var(--dim);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.18em;
 }
 
-.zone-speed {
+/* HDG row gets the loudest number; SOG slightly smaller */
+.row-hdg .value { font-size: clamp(90px, 26vw, 220px); }
+.row-heel .value { font-size: clamp(60px, 16vw, 140px); }
+.row-sog .value { font-size: clamp(80px, 24vw, 200px); }
+
+footer {
+  display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-top: 1px solid var(--line);
+  padding: 4px;
 }
-.speed-big {
-  font-size: 96px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1;
-}
-.speed-big .unit { font-size: 28px; }
-
 #status-line {
-  font-size: 13px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
   color: var(--chux);
 }
 #status-line.warn  { color: var(--qori); }
 #status-line.error { color: var(--puka); }
+#debug-line {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--dim);
+}
 
-/* Menu dialog */
+/* Menu */
 dialog#menu {
   position: fixed;
   inset: auto 12px 12px 12px;
@@ -129,36 +151,34 @@ dialog#menu {
   width: calc(100% - 24px);
   margin: 0;
   padding: 12px;
-  background: #161616;
+  background: #141414;
   color: var(--fg);
-  border: 1px solid #333;
+  border: 1px solid #2a2a2a;
   border-radius: 12px;
 }
-dialog#menu::backdrop { background: rgba(0,0,0,0.6); }
+dialog#menu::backdrop { background: rgba(0,0,0,0.7); }
 dialog#menu button {
   display: block;
   width: 100%;
   padding: 14px;
   margin: 6px 0;
   font-size: 18px;
-  background: #1f1f1f;
+  font-family: inherit;
+  background: #1c1c1c;
   color: var(--fg);
   border: 1px solid #2a2a2a;
   border-radius: 8px;
 }
 dialog#menu button.secondary { background: transparent; color: var(--dim); }
 
-/* Setup page */
+/* Setup page (unchanged behavior, tightened look) */
 body.setup {
   display: grid;
   place-items: center;
   min-height: 100dvh;
   padding: 24px;
 }
-body.setup main {
-  width: 100%;
-  max-width: 420px;
-}
+body.setup main { width: 100%; max-width: 420px; }
 body.setup h1 {
   margin: 0 0 4px;
   font-size: 40px;
@@ -187,11 +207,7 @@ body.setup input {
   letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
 }
-body.setup .hint {
-  margin: 8px 0 16px;
-  color: var(--dim);
-  font-size: 13px;
-}
+body.setup .hint { margin: 8px 0 16px; color: var(--dim); font-size: 13px; }
 body.setup button {
   width: 100%;
   padding: 18px;

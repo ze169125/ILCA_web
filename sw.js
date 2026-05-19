@@ -6,7 +6,7 @@
  *
  * Bump VERSION on any shell change to force clients to update.
  */
-const VERSION = 'pampero-v1';
+const VERSION = 'pampero-v2';
 const SHELL = [
   './',
   'index.html',
@@ -16,8 +16,9 @@ const SHELL = [
   'sensors.js',
   'ui.js',
   'storage.js',
-  'uploader.js',
+  'share.js',
   'gpx.js',
+  'csv.js',
   'manifest.webmanifest',
   'vendor/dexie.min.js',
   'icons/icon-192.png',

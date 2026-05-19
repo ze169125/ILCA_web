@@ -4,11 +4,9 @@
  *
  * sensors.js — compass, heel (inclinometer), GPS.
  *
- * Exports a single global `Sensors` object with:
- *   start()              attach listeners (must be called after a user gesture)
- *   read()               return latest consolidated snapshot
- *   zeroHeel(current)    store offset so current reading becomes 0
- *   state                {heading, headingSrc, heel, lat, lon, sog, cog, acc, t}
+ * Native sensor events fire at ~60Hz and are buffered. read() returns the
+ * mean over the last WINDOW_MS milliseconds (circular mean for heading,
+ * linear mean for heel). Visual layer is expected to poll at 2Hz.
  */
 (function () {
   'use strict';
@@ -16,63 +14,165 @@
   const HEEL_OFFSET_KEY = 'pampero.heelOffset';
   const DEG = 180 / Math.PI;
 
+  // Sliding-window means. Tune to taste: bigger → smoother but more lag.
+  const WINDOW_MS = 500;
+  // Keep a bit of margin in the buffer so trimming is cheap.
+  const BUFFER_MS = 1500;
+
+  // Complementary filter blend: higher = trust gyro more (rejects motion
+  // accels) but drifts faster; lower = trust accel more (locks to gravity).
+  // 0.98 at 60Hz → time-constant ~0.8s for accel correction.
+  const FUSION_ALPHA = 0.98;
+
   const state = {
-    heading: null,       // degrees magnetic, 0=N
-    headingSrc: null,    // 'ios' | 'android' | 'gps' | null
-    heelRaw: null,       // degrees (pre-offset, smoothed)
-    heel: null,          // degrees (post-offset)
+    headingSrc: null,     // 'ios' | 'android' | 'gps' | null
     heelOffset: parseFloat(localStorage.getItem(HEEL_OFFSET_KEY) || '0') || 0,
+    heelFused: null,      // current fused heel estimate, degrees, pre-offset
+    lastMotionT: null,    // performance.now() of last fusion update
+    lastGyroZ: null,      // last gyro rate around phone Z axis (deg/s), debug
     lat: null,
     lon: null,
-    sog: null,           // knots
-    cog: null,           // degrees true (from GPS)
-    acc: null,           // meters
-    t: null,             // ISO timestamp of last GPS fix
+    sog: null,
+    cog: null,
+    acc: null,
+    t: null,
+    sampleHz: 0,
   };
 
-  // EMA filter for heel (alpha=0.1, per plan)
-  const EMA_ALPHA = 0.1;
+  // Ring buffers
+  const headBuf = []; // {t, v: degrees}
+  const motionBuf = []; // {t, x, y, z}
+
+  function pushBuf(buf, v) {
+    const now = performance.now();
+    buf.push({ t: now, v });
+    const cutoff = now - BUFFER_MS;
+    while (buf.length && buf[0].t < cutoff) buf.shift();
+  }
+
+  function pushMotion(x, y, z) {
+    const now = performance.now();
+    motionBuf.push({ t: now, x, y, z });
+    const cutoff = now - BUFFER_MS;
+    while (motionBuf.length && motionBuf[0].t < cutoff) motionBuf.shift();
+  }
+
+  function meanMotion(windowMs) {
+    const cutoff = performance.now() - windowMs;
+    let sx = 0, sy = 0, sz = 0, n = 0;
+    for (let i = motionBuf.length - 1; i >= 0; i--) {
+      const m = motionBuf[i];
+      if (m.t < cutoff) break;
+      sx += m.x; sy += m.y; sz += m.z; n++;
+    }
+    if (!n) return null;
+    return { ax: sx/n, ay: sy/n, az: sz/n };
+  }
+
+  // Universal heel formula. Phone upright in portrait, top to sky, screen
+  // facing the sailor (back to bow). When the boat heels, gravity in phone
+  // frame tilts in the X direction. The sign of ay is platform-dependent
+  // (iOS Safari and Android Chrome report opposite signs for
+  // accelerationIncludingGravity), so we use sign(ay) to normalize.
+  //
+  // Returns degrees: 0 = level, +N = starboard heel (BE), -N = port (BB).
+  function computeHeel(ax, ay) {
+    if (ay == null || Math.abs(ay) < 0.01) return null;
+    return -Math.sign(ay) * Math.atan2(ax, Math.abs(ay)) * DEG;
+  }
+
+  function meanCircularRecent(buf, windowMs) {
+    const cutoff = performance.now() - windowMs;
+    let sx = 0, sy = 0, n = 0;
+    for (let i = buf.length - 1; i >= 0; i--) {
+      const s = buf[i];
+      if (s.t < cutoff) break;
+      const r = s.v * Math.PI / 180;
+      sx += Math.sin(r);
+      sy += Math.cos(r);
+      n++;
+    }
+    if (!n) return null;
+    const deg = Math.atan2(sx, sy) * DEG;
+    return (deg + 360) % 360;
+  }
+
+  // --- sample-rate meter (sliding 1s window on heading buffer) ---
+  function calcRate() {
+    const cutoff = performance.now() - 1000;
+    let n = 0;
+    for (let i = headBuf.length - 1; i >= 0; i--) {
+      if (headBuf[i].t < cutoff) break;
+      n++;
+    }
+    return n;
+  }
 
   function handleOrientation(e) {
-    // iOS: webkitCompassHeading is degrees magnetic, 0=N.
+    let raw = null;
     if (typeof e.webkitCompassHeading === 'number' && !Number.isNaN(e.webkitCompassHeading)) {
-      state.heading = e.webkitCompassHeading;
+      raw = e.webkitCompassHeading;
       state.headingSrc = 'ios';
-      return;
-    }
-    // Android: alpha in degrees counter-clockwise from device north.
-    if (e.absolute === true && typeof e.alpha === 'number') {
-      state.heading = (360 - e.alpha) % 360;
+    } else if (e.absolute === true && typeof e.alpha === 'number') {
+      raw = (360 - e.alpha) % 360;
       state.headingSrc = 'android';
     }
+    if (raw != null) pushBuf(headBuf, raw);
   }
 
   function handleMotion(e) {
     const g = e.accelerationIncludingGravity;
     if (!g) return;
-    const { x, z } = g;
-    if (x == null || z == null) return;
-    // Phone in portrait, top pointing to bow, screen up.
-    // heel = atan2(ax, az) in degrees
-    const raw = Math.atan2(x, z) * DEG;
-    if (state.heelRaw == null) state.heelRaw = raw;
-    else state.heelRaw = state.heelRaw + EMA_ALPHA * (raw - state.heelRaw);
-    state.heel = state.heelRaw - state.heelOffset;
+    const { x, y, z } = g;
+    if (x == null || y == null || z == null) return;
+    pushMotion(x, y, z);
+
+    // Gyro rate around the phone's Z axis (rotationRate.alpha). For phone
+    // upright with screen toward the sailor, Z = bow-stern axis → heel rate.
+    // Right-hand rule: +Z out of screen, +alpha = CCW viewed from +Z, which
+    // is the right side of the phone moving UP (= port heel). We want
+    // +heel = starboard, so we negate.
+    const r = e.rotationRate;
+    const gyroZ = (r && typeof r.alpha === 'number' && !Number.isNaN(r.alpha))
+      ? r.alpha : null;
+    state.lastGyroZ = gyroZ;
+
+    updateHeelFusion(x, y, gyroZ, performance.now());
+  }
+
+  function updateHeelFusion(ax, ay, gyroZ, nowMs) {
+    const accelHeel = computeHeel(ax, ay);
+    if (accelHeel == null) return;
+
+    if (state.heelFused == null || state.lastMotionT == null || gyroZ == null) {
+      state.heelFused = accelHeel;
+      state.lastMotionT = nowMs;
+      return;
+    }
+    const dt = (nowMs - state.lastMotionT) / 1000;
+    state.lastMotionT = nowMs;
+    if (dt <= 0 || dt > 0.5) {
+      // gap too big (tab inactive, sensor stalled) — re-seed from accel
+      state.heelFused = accelHeel;
+      return;
+    }
+    const gyroDelta = -gyroZ * dt;
+    state.heelFused = FUSION_ALPHA * (state.heelFused + gyroDelta)
+                    + (1 - FUSION_ALPHA) * accelHeel;
   }
 
   function handlePosition(p) {
     const c = p.coords;
-    if (c.accuracy != null && c.accuracy > 30) return;  // discard noisy
+    if (c.accuracy != null && c.accuracy > 30) return;
     state.lat = c.latitude;
     state.lon = c.longitude;
     state.acc = c.accuracy;
     state.sog = (c.speed != null && c.speed >= 0) ? c.speed * 1.94384 : null;
     state.cog = (c.heading != null && !Number.isNaN(c.heading)) ? c.heading : null;
     state.t = new Date(p.timestamp || Date.now()).toISOString();
-    // GPS fallback for heading: only valid with SOG > 1.5 kn
     if (state.headingSrc !== 'ios' && state.headingSrc !== 'android') {
       if (state.cog != null && state.sog != null && state.sog > 1.5) {
-        state.heading = state.cog;
+        pushBuf(headBuf, state.cog);
         state.headingSrc = 'gps';
       } else if (state.headingSrc !== 'gps') {
         state.headingSrc = null;
@@ -100,7 +200,6 @@
       try { await DeviceMotionEvent.requestPermission(); } catch (_) {}
     }
 
-    // iOS prefers 'deviceorientation'; Android may need 'deviceorientationabsolute'
     window.addEventListener('deviceorientation', handleOrientation, true);
     window.addEventListener('deviceorientationabsolute', handleOrientation, true);
     window.addEventListener('devicemotion', handleMotion, true);
@@ -123,27 +222,34 @@
   }
 
   function read() {
-    // Return a plain snapshot (null where unknown).
+    const heading = meanCircularRecent(headBuf, WINDOW_MS);
+    const m = meanMotion(WINDOW_MS);
+    const heel = (state.heelFused == null) ? null : state.heelFused - state.heelOffset;
+    state.sampleHz = calcRate();
     return {
       t: new Date().toISOString(),
       lat: state.lat,
       lon: state.lon,
       sog: state.sog,
       cog: state.cog,
-      heading: state.heading,
-      heel: state.heel,
+      heading,
+      heel,
       acc: state.acc,
       headingSrc: state.headingSrc,
+      sampleHz: state.sampleHz,
+      ax: m ? m.ax : null,
+      ay: m ? m.ay : null,
+      az: m ? m.az : null,
+      gyroZ: state.lastGyroZ,
     };
   }
 
   function zeroHeel() {
-    if (state.heelRaw == null) return false;
-    state.heelOffset = state.heelRaw;
+    if (state.heelFused == null) return false;
+    state.heelOffset = state.heelFused;
     localStorage.setItem(HEEL_OFFSET_KEY, String(state.heelOffset));
-    state.heel = 0;
     return true;
   }
 
-  window.Sensors = { start, stop, read, zeroHeel, state };
+  window.Sensors = { start, stop, read, zeroHeel, state, WINDOW_MS };
 })();
