@@ -16,8 +16,11 @@
 
   // Sliding-window means. Tune to taste: bigger → smoother but more lag.
   const WINDOW_MS = 500;
+  // Widen up to this when the default window has no samples (e.g. GPS at 1Hz
+  // with no compass). Prevents the display flickering to "---" between fixes.
+  const FALLBACK_WINDOW_MS = 3000;
   // Keep a bit of margin in the buffer so trimming is cheap.
-  const BUFFER_MS = 1500;
+  const BUFFER_MS = 4000;
 
   // Complementary filter blend: higher = trust gyro more (rejects motion
   // accels) but drifts faster; lower = trust accel more (locks to gravity).
@@ -81,7 +84,7 @@
     return -Math.sign(ay) * Math.atan2(ax, Math.abs(ay)) * DEG;
   }
 
-  function meanCircularRecent(buf, windowMs) {
+  function meanCircularInWindow(buf, windowMs) {
     const cutoff = performance.now() - windowMs;
     let sx = 0, sy = 0, n = 0;
     for (let i = buf.length - 1; i >= 0; i--) {
@@ -97,6 +100,18 @@
     return (deg + 360) % 360;
   }
 
+  // Tries windowMs first (good for 60Hz magnetometer); if no samples, widens
+  // up to fallbackMs (covers gaps between 1Hz GPS fixes so the display
+  // doesn't flicker to "---").
+  function meanCircularRecent(buf, windowMs, fallbackMs) {
+    const fast = meanCircularInWindow(buf, windowMs);
+    if (fast != null) return fast;
+    if (fallbackMs && fallbackMs > windowMs) {
+      return meanCircularInWindow(buf, fallbackMs);
+    }
+    return null;
+  }
+
   // --- sample-rate meter (sliding 1s window on heading buffer) ---
   function calcRate() {
     const cutoff = performance.now() - 1000;
@@ -109,6 +124,9 @@
   }
 
   function handleOrientation(e) {
+    // User-forced GPS mode: ignore compass entirely.
+    if (localStorage.getItem('pampero.headingSource') === 'gps') return;
+
     let raw = null;
     if (typeof e.webkitCompassHeading === 'number' && !Number.isNaN(e.webkitCompassHeading)) {
       raw = e.webkitCompassHeading;
@@ -170,10 +188,17 @@
     state.sog = (c.speed != null && c.speed >= 0) ? c.speed * 1.94384 : null;
     state.cog = (c.heading != null && !Number.isNaN(c.heading)) ? c.heading : null;
     state.t = new Date(p.timestamp || Date.now()).toISOString();
-    if (state.headingSrc !== 'ios' && state.headingSrc !== 'android') {
-      if (state.cog != null && state.sog != null && state.sog > 1.5) {
+    const forceGps = localStorage.getItem('pampero.headingSource') === 'gps';
+    if (forceGps || (state.headingSrc !== 'ios' && state.headingSrc !== 'android')) {
+      // Lower threshold when user explicitly chose GPS — they accept noisy
+      // COG at low speed in exchange for not trusting the magnetometer.
+      const minSog = forceGps ? 0.5 : 1.5;
+      if (state.cog != null && state.sog != null && state.sog > minSog) {
         pushBuf(headBuf, state.cog);
         state.headingSrc = 'gps';
+      } else if (forceGps) {
+        // Keep showing last GPS reading; don't reset to null mid-flight.
+        if (state.headingSrc !== 'gps') state.headingSrc = 'gps';
       } else if (state.headingSrc !== 'gps') {
         state.headingSrc = null;
       }
@@ -222,7 +247,7 @@
   }
 
   function read() {
-    const heading = meanCircularRecent(headBuf, WINDOW_MS);
+    const heading = meanCircularRecent(headBuf, WINDOW_MS, FALLBACK_WINDOW_MS);
     const m = meanMotion(WINDOW_MS);
     const heel = (state.heelFused == null) ? null : state.heelFused - state.heelOffset;
     state.sampleHz = calcRate();

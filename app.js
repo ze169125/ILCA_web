@@ -14,6 +14,20 @@
 
   const RECORDING_KEY = 'pampero.recording';
   const RACE_START_KEY = 'pampero.raceStart';
+  const HEADING_SOURCE_KEY = 'pampero.headingSource';
+
+  function getHeadingSource() {
+    return localStorage.getItem(HEADING_SOURCE_KEY) === 'gps' ? 'gps' : 'auto';
+  }
+  function setHeadingSource(v) {
+    if (v === 'gps') localStorage.setItem(HEADING_SOURCE_KEY, 'gps');
+    else localStorage.removeItem(HEADING_SOURCE_KEY);
+    refreshHeadingSourceLabel();
+  }
+  function refreshHeadingSourceLabel() {
+    const el = document.getElementById('heading-source-label');
+    if (el) el.textContent = getHeadingSource() === 'gps' ? 'GPS' : 'Bússola';
+  }
 
   const sailNumber = (localStorage.getItem('pampero.sail') || '').toUpperCase();
   if (!sailNumber) {
@@ -62,6 +76,7 @@
       await Storage.init();
     }
 
+    refreshHeadingSourceLabel();
     UI.setStatus('pronto', 'ok');
     setInterval(renderTick, 500);
     setInterval(slowTick, 1000);
@@ -116,6 +131,11 @@
     } else if (action === 'zero-heel') {
       const ok = Sensors.zeroHeel();
       UI.setStatus(ok ? 'heel zerado' : 'sem leitura pra zerar', ok ? 'ok' : 'warn');
+      menu.close();
+    } else if (action === 'toggle-heading-source') {
+      const next = getHeadingSource() === 'gps' ? 'auto' : 'gps';
+      setHeadingSource(next);
+      UI.setStatus(`fonte: ${next === 'gps' ? 'GPS' : 'Bússola'}`, 'ok');
       menu.close();
     } else if (action === 'share-gpx') {
       menu.close();
