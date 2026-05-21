@@ -2,12 +2,12 @@
  * SPDX-License-Identifier: CHARRUA-1.2
  * Licença CHARRUA v1.2 — ver LICENSE ou https://gitlab.fing.edu.uy/charrua/licencia
  *
- * app.js — orchestration: init, wake lock, 2Hz render + 1Hz storage tick.
+ * app.js — orchestration: init, wake lock, render loop, view switching.
  *
- * Recording is gated by localStorage 'pampero.recording'. The race start time
- * is captured in 'pampero.raceStart' on first Comecar press, used for the
- * export filename. Uploader is intentionally not started — no backend; data
- * lives in IndexedDB and is shared via menu → Compartilhar GPX/CSV.
+ * Two views: 'main' (HDG/HEEL/SOG) and 'start' (race-start aid with timer +
+ * line metrics). View is persisted in localStorage so it survives reloads.
+ * When the start timer hits 0, switches back to main and auto-starts
+ * recording (so the race data captures from the gun).
  */
 (function () {
   'use strict';
@@ -15,6 +15,7 @@
   const RECORDING_KEY = 'pampero.recording';
   const RACE_START_KEY = 'pampero.raceStart';
   const HEADING_SOURCE_KEY = 'pampero.headingSource';
+  const VIEW_KEY = 'pampero.view';
 
   function getHeadingSource() {
     return localStorage.getItem(HEADING_SOURCE_KEY) === 'gps' ? 'gps' : 'auto';
@@ -49,6 +50,42 @@
     localStorage.removeItem(RECORDING_KEY);
   }
 
+  // --- view switching ---
+  function getView() {
+    return localStorage.getItem(VIEW_KEY) === 'start' ? 'start' : 'main';
+  }
+  function setView(v) {
+    if (v === 'start') localStorage.setItem(VIEW_KEY, 'start');
+    else localStorage.removeItem(VIEW_KEY);
+    document.body.classList.remove('view-main', 'view-start');
+    document.body.classList.add(`view-${v}`);
+    const toggle = document.getElementById('view-toggle-btn');
+    if (toggle) toggle.textContent = v === 'start' ? 'Regata' : 'Largada';
+  }
+
+  // --- timer end detection ---
+  let prevTimerRemaining = null;
+  function checkTimerEnd(now) {
+    if (now != null && prevTimerRemaining != null && prevTimerRemaining > 0 && now <= 0) {
+      // Timer just hit 0
+      StartLine.cue('go');
+      StartLine.stopTimer();
+      startRecording();
+      setView('main');
+      UI.setStatus('LARGADA! gravando', 'ok');
+    } else if (now != null && prevTimerRemaining != null) {
+      // Mid-timer cues
+      const prevSec = Math.ceil(prevTimerRemaining);
+      const nowSec = Math.ceil(now);
+      if (prevSec > nowSec) {
+        // crossed an integer second
+        if (nowSec === 60 || nowSec === 30 || nowSec === 10) StartLine.cue('minute');
+        else if (nowSec <= 5 && nowSec > 0) StartLine.cue('tick');
+      }
+    }
+    prevTimerRemaining = now;
+  }
+
   let wakeLock = null;
   async function requestWakeLock() {
     if ('wakeLock' in navigator) {
@@ -76,6 +113,7 @@
       await Storage.init();
     }
 
+    setView(getView());
     refreshHeadingSourceLabel();
     UI.setStatus('pronto', 'ok');
     setInterval(renderTick, 500);
@@ -83,7 +121,15 @@
   }
 
   function renderTick() {
-    UI.render(Sensors.read());
+    const snap = Sensors.read();
+    if (getView() === 'start') {
+      const metrics = StartLine.metrics(snap);
+      const remaining = StartLine.getTimerRemaining();
+      checkTimerEnd(remaining);
+      UI.renderStart(snap, metrics, remaining);
+    } else {
+      UI.render(snap);
+    }
   }
 
   async function slowTick() {
@@ -112,13 +158,22 @@
     }
   }
 
+  // --- main menu ---
   const menu = document.getElementById('menu');
   document.getElementById('menu-btn').addEventListener('click', () => menu.showModal());
+  document.getElementById('view-toggle-btn').addEventListener('click', () => {
+    StartLine.ensureAudio();
+    setView(getView() === 'start' ? 'main' : 'start');
+  });
   menu.addEventListener('click', async (e) => {
     const btn = e.target.closest('button[data-action]');
     if (!btn) return;
     const action = btn.dataset.action;
     if (action === 'close') {
+      menu.close();
+    } else if (action === 'open-start') {
+      StartLine.ensureAudio();
+      setView('start');
       menu.close();
     } else if (action === 'start-race') {
       startRecording();
@@ -151,16 +206,49 @@
       } else {
         UI.setStatus('csv indisponível', 'warn');
       }
+    } else if (action === 'open-docs') {
+      menu.close();
+      location.href = 'como-usar.html';
     } else if (action === 'clear-data') {
       if (confirm('Apagar todos os dados locais e o número do barco?')) {
         if (window.Storage && Storage.clearAll) await Storage.clearAll();
         stopRecording();
+        StartLine.stopTimer();
+        StartLine.clearMarks();
         localStorage.removeItem(RACE_START_KEY);
+        localStorage.removeItem(VIEW_KEY);
         localStorage.removeItem('pampero.sail');
         location.replace('setup.html');
       } else {
         menu.close();
       }
+    }
+  });
+
+  // --- start view actions ---
+  document.getElementById('view-start').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-startaction]');
+    if (!btn) return;
+    StartLine.ensureAudio();
+    const a = btn.dataset.startaction;
+    const snap = Sensors.read();
+    if (a === 'pin1') {
+      if (snap.lat == null) { UI.setStatus('sem GPS pra pingar', 'warn'); return; }
+      StartLine.setMark(0, snap.lat, snap.lon);
+    } else if (a === 'pin2') {
+      if (snap.lat == null) { UI.setStatus('sem GPS pra pingar', 'warn'); return; }
+      StartLine.setMark(1, snap.lat, snap.lon);
+    } else if (a === 't5') {
+      StartLine.startTimer(300);
+    } else if (a === 't4') {
+      StartLine.startTimer(240);
+    } else if (a === 't3') {
+      StartLine.startTimer(180);
+    } else if (a === 'cancel-timer') {
+      StartLine.stopTimer();
+      prevTimerRemaining = null;
+    } else if (a === 'exit') {
+      setView('main');
     }
   });
 

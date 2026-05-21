@@ -31,10 +31,20 @@ html, body {
 
 body.live {
   display: grid;
-  grid-template-rows: 44px 1fr 44px;
+  grid-template-rows: 44px 1fr;
   height: 100vh;
   height: 100dvh;
 }
+
+/* Two-view layout: only one .view is visible at a time, picked by body class */
+.view {
+  display: none;
+  grid-template-rows: 1fr auto;
+  min-height: 0;
+  overflow: hidden;
+}
+body.view-main #view-main { display: grid; }
+body.view-start #view-start { display: grid; }
 
 header {
   display: flex;
@@ -58,6 +68,20 @@ header {
   width: 40px; height: 30px;
   border-radius: 6px;
 }
+#view-toggle-btn {
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  color: var(--fg);
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 6px 12px;
+  margin-right: 8px;
+  height: 30px;
+  border-radius: 6px;
+}
+body.view-start #view-toggle-btn { color: var(--qori); border-color: var(--qori); }
 
 .readout {
   display: grid;
@@ -174,6 +198,50 @@ dialog#menu button.danger {
   background: rgba(218, 18, 26, 0.12);
   color: var(--puka);
   border-color: rgba(218, 18, 26, 0.35);
+}
+
+/* --- Start view --- */
+.row-timer .value { font-size: clamp(96px, 28vw, 240px); color: var(--qori); }
+.row-dist .value  { font-size: clamp(64px, 18vw, 150px); }
+.row-eta .value   { font-size: clamp(64px, 18vw, 150px); }
+
+.start-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 8px 10px;
+  border-top: 1px solid var(--line);
+}
+.start-foot .ribbon {
+  display: flex;
+  justify-content: space-around;
+  font-size: 12px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+}
+.start-foot .ribbon b {
+  color: var(--fg);
+  font-weight: 700;
+}
+.start-foot .controls {
+  display: flex;
+  gap: 6px;
+}
+.start-foot .controls button {
+  flex: 1;
+  padding: 12px 4px;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 700;
+  background: #1c1c1c;
+  color: var(--fg);
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  letter-spacing: 0.04em;
+}
+.start-foot .controls button.secondary {
+  background: transparent;
+  color: var(--dim);
 }
 
 /* Setup page (unchanged behavior, tightened look) */

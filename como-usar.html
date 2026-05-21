@@ -1,0 +1,307 @@
+<!doctype html>
+<!--
+  Copyright (c) 2026 PopSolutions Cooperativa
+  SPDX-License-Identifier: CHARRUA-1.2
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>Pampero — como usar</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --fg: #e8e8e8;
+      --dim: #7a7a7a;
+      --num: #FCDD09;
+      --line: #1c1c1c;
+      --link: #FCDD09;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-text-size-adjust: 100%;
+    }
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+    a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+    a:hover { text-decoration: none; }
+    h1 {
+      font-size: 28px;
+      margin: 0 0 8px;
+      letter-spacing: -0.02em;
+    }
+    .lede {
+      color: var(--dim);
+      margin: 0 0 36px;
+    }
+    section { margin: 0 0 44px; }
+    h2 {
+      display: flex;
+      gap: 14px;
+      align-items: baseline;
+      font-size: 17px;
+      margin: 0 0 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-top: 1px solid var(--line);
+      padding-top: 24px;
+    }
+    h2 .num {
+      color: var(--num);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+    h3 {
+      font-size: 14px;
+      margin: 20px 0 6px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--dim);
+      font-weight: 700;
+    }
+    p, li { font-size: 15px; }
+    ul, ol { padding-left: 24px; }
+    li { margin: 4px 0; }
+    code {
+      background: #161616;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: var(--num);
+      border: 1px solid #222;
+    }
+    pre {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 6px;
+      padding: 12px;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    pre code { background: none; border: none; padding: 0; color: var(--fg); }
+    .crumb {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 24px;
+    }
+    .crumb a { color: var(--dim); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    th { color: var(--dim); font-weight: 600; }
+    .callout {
+      background: rgba(252, 221, 9, 0.06);
+      border-left: 3px solid var(--num);
+      padding: 12px 14px;
+      margin: 14px 0;
+      font-size: 14px;
+    }
+    .callout strong { color: var(--num); }
+    footer.bottom {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: var(--dim);
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="crumb">
+      <a href="index.html">← voltar pro app</a>
+      <span>Pampero · v6</span>
+    </div>
+
+    <h1>Como usar o Pampero</h1>
+    <p class="lede">PWA pra tracking de regata. Bússola, inclinação, velocidade, linha de largada e timer — tudo no celular, 100% offline depois de instalado.</p>
+
+    <section>
+      <h2><span class="num">01</span> Instalar como aplicativo</h2>
+      <p>Pra rodar 100% offline (e ter um ícone no celular), instale como PWA. Depois disso, pode desligar a internet — o app continua funcionando, gravando, mostrando bússola e velocidade.</p>
+
+      <h3>iOS — Safari</h3>
+      <ol>
+        <li>Abre a URL do app no Safari (não Chrome, não Firefox — tem que ser Safari pra instalar PWA no iPhone)</li>
+        <li>Toca no botão de <strong>compartilhar</strong> (quadrado com seta pra cima, na barra de baixo)</li>
+        <li>Rola pra baixo na lista, toca em <strong>"Adicionar à Tela de Início"</strong></li>
+        <li>Confirma o nome "Pampero" e toca <strong>Adicionar</strong></li>
+        <li>Volta pra tela inicial — vai ter o ícone amarelo</li>
+      </ol>
+
+      <h3>Android — Chrome</h3>
+      <ol>
+        <li>Abre a URL no Chrome</li>
+        <li>Aguarda uns segundos — costuma aparecer banner <strong>"Instalar Pampero"</strong></li>
+        <li>Se não aparecer: menu ⋮ no canto superior → <strong>"Instalar app"</strong></li>
+        <li>Confirma</li>
+      </ol>
+
+      <div class="callout">
+        <strong>Importante:</strong> antes de embarcar, abra o app uma vez já instalado pra confirmar que tudo carrega offline. Coloca o celular em modo avião e abre — se aparecer a tela normal de bússola, tá tudo cacheado e pronto pra ficar sem sinal o dia inteiro.
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">02</span> Primeira execução</h2>
+      <p>A primeira vez que você abre o app, ele pede o <strong>número da sua vela</strong> (ex: <code>BRA-123</code>). Esse número vai junto em cada ponto gravado e no nome do arquivo de export.</p>
+      <p>Em seguida o iOS vai pedir permissão pra acessar:</p>
+      <ul>
+        <li><strong>Movimento e orientação</strong> — pro acelerômetro (heel) e giroscópio</li>
+        <li><strong>Localização</strong> — pro GPS</li>
+      </ul>
+      <p>Aceita as duas, senão os sensores não funcionam.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">03</span> Tela principal — Regata</h2>
+      <p>Três números grandes, atualizam 2x por segundo (média móvel dos últimos 500ms pra estabilizar):</p>
+      <table>
+        <tr><th>HDG</th><td>Heading (proa) magnético, 0–359°. Fonte mostrada embaixo: IOS, ANDROID, ou GPS</td></tr>
+        <tr><th>HEEL</th><td>Inclinação lateral em graus. BE = estibordo, BB = bombordo. Fundido com giroscópio</td></tr>
+        <tr><th>SOG</th><td>Speed Over Ground em nós (knots), direto do GPS</td></tr>
+      </table>
+      <p>No rodapé: estado da gravação (<code>● gravando</code> ou <code>○ parado</code>), número de pontos acumulados, taxa real do sensor de bússola em Hz, e valores brutos do acelerômetro (debug).</p>
+    </section>
+
+    <section>
+      <h2><span class="num">04</span> Gravando uma regata</h2>
+      <p>A gravação <strong>não começa automaticamente</strong> — você controla manualmente.</p>
+      <ol>
+        <li>Menu (≡) → <strong>▶ Começar regata</strong></li>
+        <li>Status muda pra <code>● gravando</code>, o contador de pontos começa a subir (1 ponto por segundo)</li>
+        <li>No fim, Menu → <strong>■ Parar regata</strong> — para de gravar, mas <strong>os dados ficam salvos</strong></li>
+        <li>Pode parar e recomeçar quantas vezes quiser na mesma regata</li>
+      </ol>
+      <p>Cada ponto tem: timestamp, número da vela, lat/lon, SOG, COG, heading, heel, accuracy do GPS.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">05</span> Tela de Largada</h2>
+      <p>Modo de assistência pra start sequence. Acesse pelo botão <strong>Largada</strong> no header ou pelo menu → <strong>⏱ Largada</strong>.</p>
+
+      <h3>Marcar a linha</h3>
+      <p>Sailing até cada ponta da linha imaginária da largada (committee boat e pino):</p>
+      <ol>
+        <li>Posicione o barco em cima da boia 1, toque <strong>○ Bóia 1</strong> — vira <strong>● Bóia 1</strong></li>
+        <li>Faça o mesmo na boia 2</li>
+      </ol>
+      <p>Agora <strong>DIST À LINHA</strong> mostra sua distância perpendicular à linha (em metros), e <strong>TEMPO ATÉ LINHA</strong> mostra quantos segundos até você cruzar a linha mantendo proa e velocidade atuais.</p>
+
+      <h3>Timer</h3>
+      <p>Botões <strong>5min / 4min / 3min</strong> iniciam contagem regressiva. O app vibra/bipa em marcos:</p>
+      <ul>
+        <li>1 minuto, 30s, 10s — beep médio</li>
+        <li>5, 4, 3, 2, 1 — tick curto</li>
+        <li>0:00 — beep longo + vibração, <strong>volta automático pra tela de regata e começa a gravar</strong></li>
+      </ul>
+      <p><strong>Parar</strong> cancela o timer sem mudar de tela. <strong>Sair</strong> volta pra tela principal sem parar.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">06</span> Calibração</h2>
+
+      <h3>Bússola (figura-8)</h3>
+      <p>O magnetômetro precisa estar calibrado pra mostrar heading preciso. Antes de embarcar:</p>
+      <ol>
+        <li>Segure o celular firme</li>
+        <li>Faça movimentos em <strong>figura-8 no ar</strong> por uns 10 segundos</li>
+        <li>Gire também pelo eixo vertical (rotação na palma da mão)</li>
+      </ol>
+      <p>O iOS/Android salva a calibração automaticamente. Refaça se notar bússola pulando muito.</p>
+
+      <h3>Zerar heel</h3>
+      <p>Se o suporte do celular no barco não estiver 100% reto, o heel mostra um offset constante. Pra compensar:</p>
+      <ol>
+        <li>Em águas calmas, barco nivelado</li>
+        <li>Menu → <strong>Zerar heel</strong></li>
+        <li>A posição atual vira o "zero" — daqui pra frente o número é relativo a essa</li>
+      </ol>
+
+      <h3>Fonte do heading</h3>
+      <p>Se a bússola do celular tá ruim por interferência (mastro de aço, eletrônica), você pode forçar o app a usar GPS COG ao invés do magnetômetro:</p>
+      <p>Menu → <strong>Fonte: Bússola</strong> → toca pra alternar pra <strong>Fonte: GPS</strong>. O GPS é mais lento (1Hz) mas imune a interferência magnética, e só funciona com o barco em movimento.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">07</span> Exportar dados</h2>
+      <p>Quando quiser tirar os dados do celular:</p>
+      <ul>
+        <li>Menu → <strong>Compartilhar GPX</strong> — pra abrir em mapa (Google Earth, Strava, Garmin BaseCamp)</li>
+        <li>Menu → <strong>Compartilhar CSV</strong> — pra abrir em Numbers/Sheets/Excel</li>
+      </ul>
+      <p>Ambos abrem o seletor nativo do sistema: você escolhe Email, AirDrop, WhatsApp, Files, iCloud Drive, etc. Nada é enviado automaticamente — você decide pra onde vai.</p>
+
+      <h3>Nome do arquivo</h3>
+      <p>Formato: <code>BRA-123-2026-05-21_15h30.csv</code> — número da vela, data, hora de início da regata (quando você apertou "Começar regata").</p>
+
+      <h3>Colunas do CSV</h3>
+      <pre><code>t           ISO timestamp do fix de GPS
+sail_number número da sua vela
+lat, lon    posição em graus decimais
+sog         velocidade em nós
+cog         course over ground (direção do GPS), graus
+heading     proa (bússola), graus magnéticos
+heel        inclinação lateral, graus (+ BE, − BB)
+acc         precisão estimada do GPS, em metros</code></pre>
+    </section>
+
+    <section>
+      <h2><span class="num">08</span> Privacidade — onde ficam seus dados</h2>
+      <p>Pampero é <strong>local-first</strong>. Nada é enviado pra servidor algum automaticamente:</p>
+      <ul>
+        <li><strong>Pontos gravados</strong> ficam em <code>IndexedDB</code> do navegador, no seu celular</li>
+        <li><strong>Configurações</strong> (nº da vela, calibração, view atual, marcas da linha, timer) ficam em <code>localStorage</code>, no seu celular</li>
+        <li><strong>Exportar</strong> sempre exige um toque seu, e você escolhe pra onde mandar</li>
+        <li><strong>Não tem analytics</strong>, não tem tracking, não tem login, não tem cloud</li>
+      </ul>
+      <p>Pra apagar tudo: Menu → <strong>Limpar dados</strong>. Confirma → IndexedDB + nº da vela + marcas + timer → tudo apagado, volta pro setup inicial.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">09</span> Resolução de problemas</h2>
+
+      <h3>HEEL pulando muito</h3>
+      <p>O acelerômetro não consegue distinguir gravidade de aceleração linear. Se o celular tá num ônibus, carro, ou onda forte, vai contaminar a leitura. <strong>Em água parada/barco parado, deve ficar travado em 0±1°</strong>. Se não ficar, tem algo errado.</p>
+
+      <h3>Bússola dá leitura completamente errada (ex: +180°)</h3>
+      <p>Magnetômetro precisa de calibração. Faz a figura-8 (seção 06). Se persistir, troca pra GPS no menu.</p>
+
+      <h3>App não atualiza depois de mudança</h3>
+      <p>Service Worker às vezes cacheia versão antiga. Fecha completamente a aba/PWA, aguarda 5s, abre de novo. Se persistir, em iOS Safari: Ajustes → Safari → Avançado → Dados de Sites → procura o domínio → Remover.</p>
+
+      <h3>Tela apaga durante a regata</h3>
+      <p>O app pede <code>WakeLock</code> automaticamente — a tela não deve apagar enquanto ele está aberto. Se apagar, é porque o sistema operacional negou (bateria fraca, modo economia). Desliga o modo economia.</p>
+    </section>
+
+    <footer class="bottom">
+      <p>Pampero — fork pessoal do PWA do PopSolutions Cooperativa. Licença CHARRUA v1.2 (copyleft humanitário).</p>
+      <p><a href="index.html">← voltar pro app</a></p>
+    </footer>
+  </main>
+</body>
+</html>

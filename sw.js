@@ -6,11 +6,12 @@
  *
  * Bump VERSION on any shell change to force clients to update.
  */
-const VERSION = 'pampero-v4';
+const VERSION = 'pampero-v7';
 const SHELL = [
   './',
   'index.html',
   'setup.html',
+  'como-usar.html',
   'style.css',
   'app.js',
   'sensors.js',
@@ -19,6 +20,7 @@ const SHELL = [
   'share.js',
   'gpx.js',
   'csv.js',
+  'startline.js',
   'manifest.webmanifest',
   'vendor/dexie.min.js',
   'icons/icon-192.png',
@@ -43,7 +45,7 @@ self.addEventListener('fetch', (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // Never intercept API calls — let the uploader/app handle offline state.
+  // Skip API paths (kept for forward-compat if a backend is later attached).
   if (url.pathname.startsWith('/api/')) return;
 
   // Cache-first for same-origin GETs.

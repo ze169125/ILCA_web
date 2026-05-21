@@ -13,45 +13,84 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="live">
+<body class="live view-main">
   <header>
     <span id="sail-badge">---</span>
+    <button id="view-toggle-btn" aria-label="trocar view">Largada</button>
     <button id="menu-btn" aria-label="menu">≡</button>
   </header>
 
-  <main class="readout">
-    <section class="row row-hdg">
-      <div class="label">HDG</div>
-      <div class="value"><span id="heading-val">---</span><span class="unit">°</span></div>
-      <div class="sub" id="heading-src">&nbsp;</div>
-    </section>
+  <div id="view-main" class="view">
+    <main class="readout">
+      <section class="row row-hdg">
+        <div class="label">HDG</div>
+        <div class="value"><span id="heading-val">---</span><span class="unit">°</span></div>
+        <div class="sub" id="heading-src">&nbsp;</div>
+      </section>
 
-    <section class="row row-heel">
-      <div class="label">HEEL</div>
-      <div class="value">
-        <span id="heel-val">--</span><span class="unit">°</span>
-        <span id="heel-side" class="side"></span>
+      <section class="row row-heel">
+        <div class="label">HEEL</div>
+        <div class="value">
+          <span id="heel-val">--</span><span class="unit">°</span>
+          <span id="heel-side" class="side"></span>
+        </div>
+      </section>
+
+      <section class="row row-sog">
+        <div class="label">SOG</div>
+        <div class="value"><span id="sog-val">--</span><span class="unit">kn</span></div>
+      </section>
+    </main>
+
+    <footer>
+      <div id="status-line" class="ok">iniciando…</div>
+      <div id="debug-line" class="debug">ax -- ay -- az --</div>
+    </footer>
+  </div>
+
+  <div id="view-start" class="view">
+    <main class="readout">
+      <section class="row row-timer">
+        <div class="label">TIMER</div>
+        <div class="value"><span id="timer-val">--:--</span></div>
+      </section>
+      <section class="row row-dist">
+        <div class="label">DIST À LINHA</div>
+        <div class="value"><span id="dist-val">--</span><span class="unit">m</span></div>
+      </section>
+      <section class="row row-eta">
+        <div class="label">TEMPO ATÉ LINHA</div>
+        <div class="value"><span id="eta-val">--:--</span></div>
+      </section>
+    </main>
+    <footer class="start-foot">
+      <div class="ribbon">
+        <span>HDG <b id="hdg-mini">---</b>°</span>
+        <span>SOG <b id="sog-mini">--</b>kn</span>
       </div>
-    </section>
-
-    <section class="row row-sog">
-      <div class="label">SOG</div>
-      <div class="value"><span id="sog-val">--</span><span class="unit">kn</span></div>
-    </section>
-  </main>
-
-  <footer>
-    <div id="status-line" class="ok">iniciando…</div>
-    <div id="debug-line" class="debug">ax -- ay -- az --</div>
-  </footer>
+      <div class="controls">
+        <button data-startaction="pin1" id="pin1-btn">○ Bóia 1</button>
+        <button data-startaction="pin2" id="pin2-btn">○ Bóia 2</button>
+      </div>
+      <div class="controls">
+        <button data-startaction="t5">5min</button>
+        <button data-startaction="t4">4min</button>
+        <button data-startaction="t3">3min</button>
+        <button data-startaction="cancel-timer">Parar</button>
+        <button data-startaction="exit" class="secondary">Sair</button>
+      </div>
+    </footer>
+  </div>
 
   <dialog id="menu">
+    <button data-action="open-start">⏱ Largada</button>
     <button data-action="start-race">▶ Começar regata</button>
     <button data-action="stop-race">■ Parar regata</button>
     <button data-action="zero-heel">Zerar heel</button>
     <button data-action="toggle-heading-source">Fonte: <span id="heading-source-label">Bússola</span></button>
     <button data-action="share-gpx">Compartilhar GPX</button>
     <button data-action="share-csv">Compartilhar CSV</button>
+    <button data-action="open-docs">Como usar</button>
     <button data-action="clear-data" class="danger">Limpar dados</button>
     <button data-action="close" class="secondary">Fechar</button>
   </dialog>
@@ -62,6 +101,7 @@
   <script src="share.js"></script>
   <script src="gpx.js"></script>
   <script src="csv.js"></script>
+  <script src="startline.js"></script>
   <script src="ui.js"></script>
   <script src="app.js"></script>
 </body>
