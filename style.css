@@ -9,9 +9,9 @@
   --fg: #ffffff;        /* white */
   --dim: #6a6a6a;       /* gray (secondary text) */
   --line: #1c1c1c;      /* hairline borders */
-  --accent: #DA121A;    /* red — over target / errors */
+  --accent: #FF3B30;    /* red — over target / errors (iOS systemRed) */
   --on-target: #4ADE80; /* green — within target ±3° */
-  --under-target: #4A9EFF; /* blue — below target − 3° */
+  --under-target: #5AC8FA; /* blue — below target − 3° (iOS systemBlue light) */
 
   /* Legacy aliases kept so existing rules still compile; both map to
      primary white now that we use only black/white/red. */
@@ -116,10 +116,10 @@ body.view-start #view-toggle-btn { color: var(--accent); border-color: var(--acc
   font-weight: 600;
 }
 .value {
-  font-size: clamp(72px, 22vw, 180px);
-  font-weight: 700;
+  font-size: clamp(96px, 30vmin, 240px);
+  font-weight: 800;
   letter-spacing: -0.04em;
-  line-height: 0.95;
+  line-height: 0.9;
   display: flex;
   align-items: baseline;
   justify-content: center;
@@ -148,9 +148,9 @@ body.view-start #view-toggle-btn { color: var(--accent); border-color: var(--acc
 }
 
 /* HDG row gets the loudest number; SOG slightly smaller */
-.row-hdg .value { font-size: clamp(90px, 26vw, 220px); }
-.row-heel .value { font-size: clamp(60px, 16vw, 140px); }
-.row-sog .value { font-size: clamp(80px, 24vw, 200px); }
+.row-hdg .value  { font-size: clamp(130px, 40vmin, 320px); }
+.row-heel .value { font-size: clamp(110px, 34vmin, 260px); }
+.row-sog .value  { font-size: clamp(120px, 38vmin, 300px); }
 
 /* Heel mode switching */
 .row-heel[data-mode="number"] .heel-bar { display: none; }
@@ -169,15 +169,15 @@ body.view-start #view-toggle-btn { color: var(--accent); border-color: var(--acc
   gap: 10px;
 }
 .heel-bar-num {
-  font-size: clamp(68px, 17vw, 140px);
-  font-weight: 700;
+  font-size: clamp(120px, 36vmin, 280px);
+  font-weight: 800;
   letter-spacing: -0.04em;
-  line-height: 0.95;
+  line-height: 0.9;
   text-align: center;
   color: var(--fg);
   transition: color 160ms ease;
 }
-.heel-bar-num .unit { font-size: 0.32em; color: var(--dim); }
+.heel-bar-num .unit { font-size: 0.28em; color: var(--dim); }
 
 /* Heel color states: applied to both the value (number mode) and the
    bar number + fill (bar mode). Driven by data-state on the heel row. */
@@ -192,10 +192,10 @@ body.view-start #view-toggle-btn { color: var(--accent); border-color: var(--acc
 .row-heel[data-state="over"]  .heel-fill { background: var(--accent); }
 .heel-bar-track {
   position: relative;
-  height: 36px;
+  height: 52px;
   background: #141414;
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: visible;
 }
 .heel-fill {
@@ -220,12 +220,13 @@ body.view-start #view-toggle-btn { color: var(--accent); border-color: var(--acc
 .heel-bar-ticks {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 16px;
+  font-weight: 700;
   color: var(--dim);
   letter-spacing: 0.06em;
   padding: 0 2px;
 }
-.heel-bar-ticks span { width: 24px; text-align: center; }
+.heel-bar-ticks span { width: 32px; text-align: center; }
 .heel-bar-ticks span:first-child { text-align: left; }
 .heel-bar-ticks span:last-child  { text-align: right; }
 
@@ -380,9 +381,9 @@ dialog#menu hr {
 }
 
 /* --- Start view --- */
-.row-timer .value { font-size: clamp(96px, 28vw, 240px); color: var(--qori); }
-.row-dist .value  { font-size: clamp(64px, 18vw, 150px); }
-.row-eta .value   { font-size: clamp(64px, 18vw, 150px); }
+.row-timer .value { font-size: clamp(140px, 44vmin, 360px); color: var(--qori); }
+.row-dist .value  { font-size: clamp(96px, 32vmin, 240px); }
+.row-eta .value   { font-size: clamp(96px, 32vmin, 240px); }
 .row-eta .value #eta-val.neg { color: var(--accent); }
 
 .start-foot {
