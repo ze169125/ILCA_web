@@ -13,6 +13,7 @@
   const headingSrc = document.getElementById('heading-src');
   const heelVal = document.getElementById('heel-val');
   const heelRow = document.querySelector('.row-heel');
+  const sogRow = document.querySelector('.row-sog');
   const sogVal = document.getElementById('sog-val');
   const statusLine = document.getElementById('status-line');
   const debugLine = document.getElementById('debug-line');
@@ -30,13 +31,20 @@
   function fmtSog(n)  { return (n == null || Number.isNaN(n)) ? '--'  : n.toFixed(1); }
   function fmtAccel(n){ return (n == null || Number.isNaN(n)) ? '--'  : n.toFixed(2); }
 
-  let last = { h: '', hsrc: '', he: '', sog: '', dbg: '', hstate: '' };
+  let last = { h: '', hsrc: '', he: '', sog: '', dbg: '', hstate: '', sgstate: '' };
 
   const HEEL_STATE_BAND = 3; // ±3° around target = green; outside = blue/red
+  const SOG_STATE_BAND = 0.3; // ±0.3 nó around target = green
   function heelState(absHeel, target) {
     if (absHeel == null || !Number.isFinite(absHeel)) return '';
     if (absHeel < target - HEEL_STATE_BAND) return 'under';
     if (absHeel > target + HEEL_STATE_BAND) return 'over';
+    return 'on';
+  }
+  function sogState(sog, target) {
+    if (sog == null || !Number.isFinite(sog) || target == null || target <= 0) return '';
+    if (sog < target - SOG_STATE_BAND) return 'under';
+    if (sog > target + SOG_STATE_BAND) return 'over';
     return 'on';
   }
 
@@ -66,6 +74,13 @@
 
     const sog = fmtSog(snap.sog);
     if (sog !== last.sog) { sogVal.textContent = sog; last.sog = sog; }
+
+    const sogTarget = parseInt(localStorage.getItem('pampero.sogTarget') || '', 10) || 0;
+    const sgs = sogState(snap.sog, sogTarget);
+    if (sgs !== last.sgstate) {
+      if (sogRow) sogRow.dataset.state = sgs;
+      last.sgstate = sgs;
+    }
 
     const dbg = `ax ${fmtAccel(snap.ax)}  ay ${fmtAccel(snap.ay)}  az ${fmtAccel(snap.az)}  ·  gz ${fmtAccel(snap.gyroZ)}°/s`;
     if (dbg !== last.dbg) { debugLine.textContent = dbg; last.dbg = dbg; }

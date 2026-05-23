@@ -190,6 +190,12 @@ body.view-start #view-toggle-btn { color: var(--accent); border-color: var(--acc
 .row-heel[data-state="under"] .heel-fill { background: var(--under-target); }
 .row-heel[data-state="on"]    .heel-fill { background: var(--on-target); }
 .row-heel[data-state="over"]  .heel-fill { background: var(--accent); }
+
+/* SOG color states: white default, colored when target is set */
+.row-sog[data-state="under"] .value { color: var(--under-target); }
+.row-sog[data-state="on"]    .value { color: var(--on-target); }
+.row-sog[data-state="over"]  .value { color: var(--accent); }
+.row-sog .value { transition: color 160ms ease; }
 .heel-bar-track {
   position: relative;
   height: 52px;

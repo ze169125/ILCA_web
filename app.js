@@ -21,6 +21,13 @@
   const HEEL_MODE_KEY = 'pampero.heelMode';
   const HEEL_TARGET_KEY = 'pampero.heelTarget';
   const HEEL_TARGET_OPTIONS = [10, 15, 20, 25, 30];
+  const SOG_TARGET_KEY = 'pampero.sogTarget';
+  const SOG_TARGET_OPTIONS = [0, 3, 4, 5, 6, 7];
+
+  function getSogTarget() {
+    const v = parseInt(localStorage.getItem(SOG_TARGET_KEY) || '', 10);
+    return SOG_TARGET_OPTIONS.includes(v) ? v : 0;
+  }
 
   function getHeelMode() {
     return localStorage.getItem(HEEL_MODE_KEY) === 'bar' ? 'bar' : 'number';
@@ -133,6 +140,10 @@
     const heelTarget = String(getHeelTarget());
     document.querySelectorAll('#seg-heel-target button').forEach(b => {
       b.classList.toggle('active', b.dataset.heelTarget === heelTarget);
+    });
+    const sogTarget = String(getSogTarget());
+    document.querySelectorAll('#seg-sog-target button').forEach(b => {
+      b.classList.toggle('active', b.dataset.sogTarget === sogTarget);
     });
   }
 
@@ -301,12 +312,13 @@
     localStorage.removeItem(HEADING_SOURCE_KEY);
     localStorage.removeItem(HEEL_MODE_KEY);
     localStorage.removeItem(HEEL_TARGET_KEY);
+    localStorage.removeItem(SOG_TARGET_KEY);
     localStorage.removeItem('pampero.sail');
     location.replace('setup.html');
   }
 
   document.getElementById('view-settings').addEventListener('click', async (e) => {
-    const btn = e.target.closest('button[data-settingsaction], button[data-source], button[data-sog], button[data-heel-mode], button[data-heel-target]');
+    const btn = e.target.closest('button[data-settingsaction], button[data-source], button[data-sog], button[data-heel-mode], button[data-heel-target], button[data-sog-target]');
     if (!btn) return;
     if (btn.dataset.source) {
       setHeadingSource(btn.dataset.source);
@@ -331,6 +343,13 @@
       if (btn.dataset.heelTarget === '15') localStorage.removeItem(HEEL_TARGET_KEY);
       else localStorage.setItem(HEEL_TARGET_KEY, btn.dataset.heelTarget);
       applyHeelMode();
+      refreshSettingsUI();
+      return;
+    }
+    if (btn.dataset.sogTarget) {
+      const v = parseInt(btn.dataset.sogTarget, 10);
+      if (v === 0) localStorage.removeItem(SOG_TARGET_KEY);
+      else localStorage.setItem(SOG_TARGET_KEY, String(v));
       refreshSettingsUI();
       return;
     }
