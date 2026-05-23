@@ -381,9 +381,9 @@ dialog#menu hr {
 }
 
 /* --- Start view --- */
-.row-timer .value { font-size: clamp(140px, 44vmin, 360px); color: var(--qori); }
-.row-dist .value  { font-size: clamp(96px, 32vmin, 240px); }
-.row-eta .value   { font-size: clamp(96px, 32vmin, 240px); }
+.row-timer .value { font-size: clamp(96px, 26vmin, 220px); color: var(--qori); }
+.row-dist .value  { font-size: clamp(68px, 18vmin, 150px); }
+.row-eta .value   { font-size: clamp(68px, 18vmin, 150px); }
 .row-eta .value #eta-val.neg { color: var(--accent); }
 
 .start-foot {
@@ -425,17 +425,18 @@ dialog#menu hr {
   color: var(--dim);
 }
 .start-foot .controls.pins {
-  gap: 24px;
-  padding: 10px 24px 6px;
+  gap: 40px;
+  padding: 16px 32px 10px;
 }
 .start-foot .controls .pin-btn {
   background: transparent;
   color: var(--qori);
-  border: 2px solid var(--qori);
+  border: 3px solid var(--qori);
   border-radius: 999px;
-  padding: 16px 8px;
-  font-size: 16px;
-  letter-spacing: 0.06em;
+  padding: 26px 8px;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   transition: background 120ms ease, color 120ms ease;
 }
 .start-foot .controls .pin-btn.active {
