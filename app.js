@@ -33,10 +33,11 @@
     const row = document.querySelector('.row-heel');
     if (row) row.dataset.mode = getHeelMode();
     const target = getHeelTarget();
-    const ln = document.getElementById('heel-label-neg');
-    const lp = document.getElementById('heel-label-pos');
-    if (ln) ln.textContent = `-${target}°`;
-    if (lp) lp.textContent = `+${target}°`;
+    const mark = document.getElementById('heel-target-mark');
+    if (mark) {
+      const pct = Math.min(100, (target / 30) * 100);
+      mark.style.left = pct + '%';
+    }
   }
 
   function getHeadingSource() {

@@ -7,7 +7,9 @@
 (function () {
   'use strict';
 
-  const heelNeedle = document.getElementById('heel-needle');
+  const heelFill = document.getElementById('heel-fill');
+  const heelBarVal = document.getElementById('heel-bar-val');
+  const heelBarSide = document.getElementById('heel-bar-side');
   const headingVal = document.getElementById('heading-val');
   const headingSrc = document.getElementById('heading-src');
   const heelVal = document.getElementById('heel-val');
@@ -44,13 +46,16 @@
     const hside = (snap.heel == null) ? '' : (snap.heel >= 0 ? 'BE' : 'BB');
     if (hside !== last.hside) { heelSide.textContent = hside; last.hside = hside; }
 
-    if (heelNeedle && snap.heel != null) {
+    if (heelFill && snap.heel != null) {
       const target = parseInt(localStorage.getItem('pampero.heelTarget') || '', 10) || 15;
-      const scale = target * 2; // bar covers [-2*target, +2*target]
-      const clamped = Math.max(-scale, Math.min(scale, snap.heel));
-      const pct = 50 + (clamped / scale) * 50;
-      heelNeedle.style.left = pct + '%';
-      heelNeedle.classList.toggle('over', Math.abs(snap.heel) > target);
+      const abs = Math.abs(snap.heel);
+      const pct = Math.min(100, (abs / 30) * 100);
+      heelFill.style.width = pct + '%';
+      heelFill.classList.toggle('over', abs > target);
+      if (heelBarVal) heelBarVal.textContent = Math.round(abs);
+      if (heelBarSide) {
+        heelBarSide.textContent = abs < 0.5 ? '--' : (snap.heel >= 0 ? 'BE' : 'BB');
+      }
     }
 
     const sog = fmtSog(snap.sog);
