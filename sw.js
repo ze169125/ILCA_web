@@ -6,12 +6,13 @@
  *
  * Bump VERSION on any shell change to force clients to update.
  */
-const VERSION = 'pampero-v15';
+const VERSION = 'pampero-v16';
 const SHELL = [
   './',
   'index.html',
   'setup.html',
   'como-usar.html',
+  'baixar.html',
   'style.css',
   'app.js',
   'sensors.js',
@@ -55,8 +56,10 @@ self.addEventListener('fetch', (event) => {
     caches.match(req).then((cached) => {
       if (cached) return cached;
       return fetch(req).then((res) => {
-        // opportunistically cache successful shell-scope responses
-        if (res.ok && res.type === 'basic') {
+        // opportunistically cache successful shell-scope responses,
+        // but skip large binaries (e.g. the APK download) to avoid bloat.
+        const isBinary = url.pathname.endsWith('.apk');
+        if (res.ok && res.type === 'basic' && !isBinary) {
           const copy = res.clone();
           caches.open(VERSION).then(c => c.put(req, copy)).catch(() => {});
         }

@@ -253,6 +253,9 @@
     } else if (action === 'open-docs') {
       menu.close();
       location.href = 'como-usar.html';
+    } else if (action === 'open-download') {
+      menu.close();
+      location.href = 'baixar.html';
     }
   });
 
