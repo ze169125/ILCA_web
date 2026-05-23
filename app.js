@@ -18,6 +18,26 @@
   const VIEW_KEY = 'pampero.view';
   const SOG_WINDOW_KEY = 'pampero.sogWindowMs';
   const SOG_WINDOW_OPTIONS = [0, 1000, 2000, 3000, 5000];
+  const HEEL_MODE_KEY = 'pampero.heelMode';
+  const HEEL_TARGET_KEY = 'pampero.heelTarget';
+  const HEEL_TARGET_OPTIONS = [10, 15, 20, 25, 30];
+
+  function getHeelMode() {
+    return localStorage.getItem(HEEL_MODE_KEY) === 'bar' ? 'bar' : 'number';
+  }
+  function getHeelTarget() {
+    const v = parseInt(localStorage.getItem(HEEL_TARGET_KEY) || '', 10);
+    return HEEL_TARGET_OPTIONS.includes(v) ? v : 15;
+  }
+  function applyHeelMode() {
+    const row = document.querySelector('.row-heel');
+    if (row) row.dataset.mode = getHeelMode();
+    const target = getHeelTarget();
+    const ln = document.getElementById('heel-label-neg');
+    const lp = document.getElementById('heel-label-pos');
+    if (ln) ln.textContent = `-${target}°`;
+    if (lp) lp.textContent = `+${target}°`;
+  }
 
   function getHeadingSource() {
     return localStorage.getItem(HEADING_SOURCE_KEY) === 'gps' ? 'gps' : 'auto';
@@ -105,6 +125,14 @@
     document.querySelectorAll('#seg-sog button').forEach(b => {
       b.classList.toggle('active', b.dataset.sog === sog);
     });
+    const heelMode = getHeelMode();
+    document.querySelectorAll('#seg-heel-mode button').forEach(b => {
+      b.classList.toggle('active', b.dataset.heelMode === heelMode);
+    });
+    const heelTarget = String(getHeelTarget());
+    document.querySelectorAll('#seg-heel-target button').forEach(b => {
+      b.classList.toggle('active', b.dataset.heelTarget === heelTarget);
+    });
   }
 
   // --- timer end detection ---
@@ -161,6 +189,7 @@
     setView(getView());
     refreshHeadingSourceLabel();
     refreshSogWindowLabel();
+    applyHeelMode();
     UI.setStatus('pronto', 'ok');
     setInterval(renderTick, 500);
     setInterval(slowTick, 1000);
@@ -269,12 +298,14 @@
     localStorage.removeItem(VIEW_KEY);
     localStorage.removeItem(SOG_WINDOW_KEY);
     localStorage.removeItem(HEADING_SOURCE_KEY);
+    localStorage.removeItem(HEEL_MODE_KEY);
+    localStorage.removeItem(HEEL_TARGET_KEY);
     localStorage.removeItem('pampero.sail');
     location.replace('setup.html');
   }
 
   document.getElementById('view-settings').addEventListener('click', async (e) => {
-    const btn = e.target.closest('button[data-settingsaction], button[data-source], button[data-sog]');
+    const btn = e.target.closest('button[data-settingsaction], button[data-source], button[data-sog], button[data-heel-mode], button[data-heel-target]');
     if (!btn) return;
     if (btn.dataset.source) {
       setHeadingSource(btn.dataset.source);
@@ -285,6 +316,20 @@
       const ms = parseInt(btn.dataset.sog, 10);
       if (ms === 2000) localStorage.removeItem(SOG_WINDOW_KEY);
       else localStorage.setItem(SOG_WINDOW_KEY, String(ms));
+      refreshSettingsUI();
+      return;
+    }
+    if (btn.dataset.heelMode) {
+      if (btn.dataset.heelMode === 'number') localStorage.removeItem(HEEL_MODE_KEY);
+      else localStorage.setItem(HEEL_MODE_KEY, btn.dataset.heelMode);
+      applyHeelMode();
+      refreshSettingsUI();
+      return;
+    }
+    if (btn.dataset.heelTarget) {
+      if (btn.dataset.heelTarget === '15') localStorage.removeItem(HEEL_TARGET_KEY);
+      else localStorage.setItem(HEEL_TARGET_KEY, btn.dataset.heelTarget);
+      applyHeelMode();
       refreshSettingsUI();
       return;
     }

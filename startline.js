@@ -132,8 +132,10 @@
     return Math.abs(dx * (A.y - P.y) - (A.x - P.x) * dy) / len;
   }
 
-  // Intersection of ray P + t*(sin(h), cos(h)) with the infinite line A-B.
-  // Returns t in meters if the line is ahead of P, otherwise null.
+  // Intersection of the heading ray (parametrised by t) with the infinite
+  // line A-B. Returns t in meters: positive if the line is ahead of P,
+  // negative if it is behind. null only when the heading is parallel to the
+  // line (no intersection at all).
   function rayToLine(P, headingDeg, A, B) {
     const dx = Math.sin(headingDeg * RAD);
     const dy = Math.cos(headingDeg * RAD);
@@ -141,8 +143,7 @@
     const ey = B.y - A.y;
     const det = -dx * ey + dy * ex;
     if (Math.abs(det) < 1e-9) return null; // parallel
-    const t = ((P.x - A.x) * ey - (P.y - A.y) * ex) / det;
-    return t > 0 ? t : null;
+    return ((P.x - A.x) * ey - (P.y - A.y) * ex) / det;
   }
 
   function metrics(snap) {
@@ -161,9 +162,18 @@
     const B = toLocalMeters(lat0, lon0, m2.lat, m2.lon);
     const P = toLocalMeters(lat0, lon0, snap.lat, snap.lon);
     out.distance = perpDistance(P, A, B);
-    if (snap.heading != null && snap.sog != null && snap.sog > 0.1) {
+    if (snap.heading != null) {
       const t = rayToLine(P, snap.heading, A, B);
-      if (t != null) out.eta = t / (snap.sog * KNOT_TO_MS);
+      if (t != null) {
+        const sogMs = (snap.sog || 0) * KNOT_TO_MS;
+        if (sogMs < 0.05) {
+          // Standing still — ETA is undefined; signal as infinity so the UI
+          // can show ∞ instead of going to "--".
+          out.eta = Infinity;
+        } else {
+          out.eta = t / sogMs;
+        }
+      }
     }
     return out;
   }

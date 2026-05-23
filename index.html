@@ -28,11 +28,24 @@
         <div class="sub" id="heading-src">&nbsp;</div>
       </section>
 
-      <section class="row row-heel">
+      <section class="row row-heel" data-mode="number">
         <div class="label">HEEL</div>
-        <div class="value">
+        <div class="value heel-value">
           <span id="heel-val">--</span><span class="unit">°</span>
           <span id="heel-side" class="side"></span>
+        </div>
+        <div class="heel-bar">
+          <div class="heel-track">
+            <div class="heel-mark" style="left:25%"></div>
+            <div class="heel-mark center" style="left:50%"></div>
+            <div class="heel-mark" style="left:75%"></div>
+            <div class="heel-needle" id="heel-needle" style="left:50%"></div>
+          </div>
+          <div class="heel-bar-labels">
+            <span id="heel-label-neg">-15°</span>
+            <span>0°</span>
+            <span id="heel-label-pos">+15°</span>
+          </div>
         </div>
       </section>
 
@@ -72,6 +85,27 @@
           <button data-sog="5000">5s</button>
         </div>
         <div class="settings-hint">Suaviza a velocidade calculando média móvel. Maior janela = mais estável, mais lag. "cru" mostra direto do GPS.</div>
+      </section>
+
+      <section class="settings-group">
+        <div class="settings-label">Modo do heel</div>
+        <div class="seg" id="seg-heel-mode">
+          <button data-heel-mode="number">Número</button>
+          <button data-heel-mode="bar">Barra</button>
+        </div>
+        <div class="settings-hint">Número: ângulo em graus. Barra: indicador horizontal com marcas em −target, 0, +target.</div>
+      </section>
+
+      <section class="settings-group">
+        <div class="settings-label">Target de inclinação</div>
+        <div class="seg" id="seg-heel-target">
+          <button data-heel-target="10">10°</button>
+          <button data-heel-target="15">15°</button>
+          <button data-heel-target="20">20°</button>
+          <button data-heel-target="25">25°</button>
+          <button data-heel-target="30">30°</button>
+        </div>
+        <div class="settings-hint">Define a posição das marcas na barra. Quando o heel passa do target, a agulha fica vermelha.</div>
       </section>
 
       <section class="settings-group">

@@ -7,6 +7,7 @@
 (function () {
   'use strict';
 
+  const heelNeedle = document.getElementById('heel-needle');
   const headingVal = document.getElementById('heading-val');
   const headingSrc = document.getElementById('heading-src');
   const heelVal = document.getElementById('heel-val');
@@ -43,6 +44,15 @@
     const hside = (snap.heel == null) ? '' : (snap.heel >= 0 ? 'BE' : 'BB');
     if (hside !== last.hside) { heelSide.textContent = hside; last.hside = hside; }
 
+    if (heelNeedle && snap.heel != null) {
+      const target = parseInt(localStorage.getItem('pampero.heelTarget') || '', 10) || 15;
+      const scale = target * 2; // bar covers [-2*target, +2*target]
+      const clamped = Math.max(-scale, Math.min(scale, snap.heel));
+      const pct = 50 + (clamped / scale) * 50;
+      heelNeedle.style.left = pct + '%';
+      heelNeedle.classList.toggle('over', Math.abs(snap.heel) > target);
+    }
+
     const sog = fmtSog(snap.sog);
     if (sog !== last.sog) { sogVal.textContent = sog; last.sog = sog; }
 
@@ -61,11 +71,20 @@
   }
 
   function fmtTime(sec) {
-    if (sec == null || !Number.isFinite(sec)) return '--:--';
+    if (sec == null) return '--:--';
+    if (!Number.isFinite(sec)) return '--:--';
     const s = Math.max(0, Math.round(sec));
     const m = Math.floor(s / 60);
     const r = s % 60;
     return `${String(m).padStart(2, '0')}:${String(r).padStart(2, '0')}`;
+  }
+  function fmtEta(sec) {
+    // ETA shown in raw seconds with sign. ∞ when SOG≈0, --:-- when no
+    // intersection (proa parallel to the line, heading missing).
+    if (sec == null) return '--';
+    if (!Number.isFinite(sec)) return '∞';
+    const s = Math.round(sec);
+    return `${s}s`;
   }
   function fmtDist(m) {
     if (m == null || !Number.isFinite(m)) return '--';
@@ -82,8 +101,13 @@
     const d = fmtDist(lineMetrics ? lineMetrics.distance : null);
     if (d !== lastStart.dist) { distVal.textContent = d; lastStart.dist = d; }
 
-    const eta = fmtTime(lineMetrics ? lineMetrics.eta : null);
-    if (eta !== lastStart.eta) { etaVal.textContent = eta; lastStart.eta = eta; }
+    const etaRaw = lineMetrics ? lineMetrics.eta : null;
+    const eta = fmtEta(etaRaw);
+    if (eta !== lastStart.eta) {
+      etaVal.textContent = eta;
+      etaVal.classList.toggle('neg', Number.isFinite(etaRaw) && etaRaw < 0);
+      lastStart.eta = eta;
+    }
 
     const p1Active = !!(lineMetrics && lineMetrics.hasMark1);
     const p1State = p1Active ? 'on' : 'off';

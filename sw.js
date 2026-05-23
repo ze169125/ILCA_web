@@ -6,7 +6,7 @@
  *
  * Bump VERSION on any shell change to force clients to update.
  */
-const VERSION = 'pampero-v16';
+const VERSION = 'pampero-v17';
 const SHELL = [
   './',
   'index.html',

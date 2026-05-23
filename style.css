@@ -5,13 +5,17 @@
  * Pampero — dark, high-contrast, numbers-only.
  */
 :root {
-  --bg: #0a0a0a;
-  --fg: #f4f4f4;
-  --dim: #6a6a6a;
-  --line: #1c1c1c;
-  --qori: #FCDD09;   /* accent/active */
-  --puka: #DA121A;   /* warn/error */
-  --chux: #078930;   /* ok */
+  --bg: #0a0a0a;        /* black */
+  --fg: #ffffff;        /* white */
+  --dim: #6a6a6a;       /* gray (secondary text) */
+  --line: #1c1c1c;      /* hairline borders */
+  --accent: #DA121A;    /* red — the only colored accent */
+
+  /* Legacy aliases kept so existing rules still compile; both map to
+     primary white now that we use only black/white/red. */
+  --qori: var(--fg);
+  --chux: var(--fg);
+  --puka: var(--accent);
 }
 
 * { box-sizing: border-box; }
@@ -82,7 +86,7 @@ header {
   height: 30px;
   border-radius: 6px;
 }
-body.view-start #view-toggle-btn { color: var(--qori); border-color: var(--qori); }
+body.view-start #view-toggle-btn { color: var(--accent); border-color: var(--accent); }
 
 .readout {
   display: grid;
@@ -146,6 +150,64 @@ body.view-start #view-toggle-btn { color: var(--qori); border-color: var(--qori)
 .row-heel .value { font-size: clamp(60px, 16vw, 140px); }
 .row-sog .value { font-size: clamp(80px, 24vw, 200px); }
 
+/* Heel mode switching */
+.row-heel[data-mode="number"] .heel-bar { display: none; }
+.row-heel[data-mode="bar"] .heel-value { display: none; }
+.row-heel[data-mode="bar"] {
+  justify-content: center;
+  padding-top: 28px;
+}
+.heel-bar {
+  width: 86%;
+  max-width: 480px;
+  padding: 8px 0;
+}
+.heel-track {
+  position: relative;
+  height: 56px;
+  background: #141414;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.heel-mark {
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  width: 2px;
+  background: #000;
+  transform: translateX(-50%);
+}
+.heel-mark.center {
+  background: var(--fg);
+  width: 3px;
+}
+.heel-needle {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 8px;
+  background: var(--fg);
+  border-radius: 4px;
+  transform: translateX(-50%);
+  transition: left 220ms cubic-bezier(.2,.7,.2,1), background 120ms ease;
+}
+.heel-needle.over { background: var(--accent); }
+.heel-bar-labels {
+  position: relative;
+  height: 18px;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--dim);
+  letter-spacing: 0.06em;
+}
+.heel-bar-labels span {
+  position: absolute;
+  transform: translateX(-50%);
+}
+.heel-bar-labels span:nth-child(1) { left: 25%; }
+.heel-bar-labels span:nth-child(2) { left: 50%; color: var(--fg); }
+.heel-bar-labels span:nth-child(3) { left: 75%; }
+
 footer {
   display: flex;
   flex-direction: column;
@@ -158,10 +220,10 @@ footer {
 #status-line {
   font-size: 12px;
   letter-spacing: 0.06em;
-  color: var(--chux);
+  color: var(--fg);
 }
-#status-line.warn  { color: var(--qori); }
-#status-line.error { color: var(--puka); }
+#status-line.warn  { color: var(--dim); }
+#status-line.error { color: var(--accent); }
 #debug-line {
   font-size: 10px;
   letter-spacing: 0.04em;
@@ -300,6 +362,7 @@ dialog#menu hr {
 .row-timer .value { font-size: clamp(96px, 28vw, 240px); color: var(--qori); }
 .row-dist .value  { font-size: clamp(64px, 18vw, 150px); }
 .row-eta .value   { font-size: clamp(64px, 18vw, 150px); }
+.row-eta .value #eta-val.neg { color: var(--accent); }
 
 .start-foot {
   display: flex;
