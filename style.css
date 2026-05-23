@@ -431,34 +431,46 @@ dialog#menu hr {
   color: var(--dim);
 }
 .start-foot .controls.pins {
-  gap: 40px;
-  padding: 16px 32px 10px;
+  gap: 28px;
+  padding: 12px 18px 6px;
 }
 .start-foot .controls .pin-btn {
   background: transparent;
-  color: var(--qori);
-  border: 3px solid var(--qori);
+  color: var(--fg);
+  border: 3px solid var(--fg);
   border-radius: 999px;
-  padding: 26px 8px;
-  font-size: 24px;
+  padding: 18px 8px;
+  font-size: 22px;
   font-weight: 800;
   letter-spacing: 0.08em;
   transition: background 120ms ease, color 120ms ease;
 }
 .start-foot .controls .pin-btn.active {
-  background: var(--qori);
+  background: var(--fg);
   color: #0a0a0a;
 }
-.start-foot .controls .primary {
-  background: var(--qori);
-  color: #0a0a0a;
-  border-color: var(--qori);
-  font-size: 18px;
+.start-foot .controls.timer-controls {
+  gap: 14px;
+  padding: 6px 14px 10px;
 }
-.start-foot .controls .primary.running {
-  background: var(--puka);
+.start-foot .controls.timer-controls button {
+  background: transparent;
+  color: var(--fg);
+  border: 3px solid var(--fg);
+  border-radius: 999px;
+  padding: 16px 8px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.start-foot .controls.timer-controls .primary {
+  background: var(--fg);
+  color: #0a0a0a;
+}
+.start-foot .controls.timer-controls .primary.running {
+  background: var(--accent);
   color: #fff;
-  border-color: var(--puka);
+  border-color: var(--accent);
 }
 
 /* Setup page (unchanged behavior, tightened look) */
