@@ -9,11 +9,10 @@
 
   const heelFill = document.getElementById('heel-fill');
   const heelBarVal = document.getElementById('heel-bar-val');
-  const heelBarSide = document.getElementById('heel-bar-side');
   const headingVal = document.getElementById('heading-val');
   const headingSrc = document.getElementById('heading-src');
   const heelVal = document.getElementById('heel-val');
-  const heelSide = document.getElementById('heel-side');
+  const heelRow = document.querySelector('.row-heel');
   const sogVal = document.getElementById('sog-val');
   const statusLine = document.getElementById('status-line');
   const debugLine = document.getElementById('debug-line');
@@ -31,7 +30,15 @@
   function fmtSog(n)  { return (n == null || Number.isNaN(n)) ? '--'  : n.toFixed(1); }
   function fmtAccel(n){ return (n == null || Number.isNaN(n)) ? '--'  : n.toFixed(2); }
 
-  let last = { h: '', hsrc: '', he: '', hside: '', sog: '', dbg: '' };
+  let last = { h: '', hsrc: '', he: '', sog: '', dbg: '', hstate: '' };
+
+  const HEEL_STATE_BAND = 3; // ±3° around target = green; outside = blue/red
+  function heelState(absHeel, target) {
+    if (absHeel == null || !Number.isFinite(absHeel)) return '';
+    if (absHeel < target - HEEL_STATE_BAND) return 'under';
+    if (absHeel > target + HEEL_STATE_BAND) return 'over';
+    return 'on';
+  }
 
   function render(snap) {
     const h = fmtHdg(snap.heading);
@@ -43,19 +50,18 @@
     const he = fmtHeel(snap.heel);
     if (he !== last.he) { heelVal.textContent = he; last.he = he; }
 
-    const hside = (snap.heel == null) ? '' : (snap.heel >= 0 ? 'BE' : 'BB');
-    if (hside !== last.hside) { heelSide.textContent = hside; last.hside = hside; }
+    const target = parseInt(localStorage.getItem('pampero.heelTarget') || '', 10) || 15;
+    const absHeel = snap.heel == null ? null : Math.abs(snap.heel);
+    const state = heelState(absHeel, target);
+    if (state !== last.hstate) {
+      if (heelRow) heelRow.dataset.state = state;
+      last.hstate = state;
+    }
 
     if (heelFill && snap.heel != null) {
-      const target = parseInt(localStorage.getItem('pampero.heelTarget') || '', 10) || 15;
-      const abs = Math.abs(snap.heel);
-      const pct = Math.min(100, (abs / 30) * 100);
+      const pct = Math.min(100, (absHeel / 30) * 100);
       heelFill.style.width = pct + '%';
-      heelFill.classList.toggle('over', abs > target);
-      if (heelBarVal) heelBarVal.textContent = Math.round(abs);
-      if (heelBarSide) {
-        heelBarSide.textContent = abs < 0.5 ? '--' : (snap.heel >= 0 ? 'BE' : 'BB');
-      }
+      if (heelBarVal) heelBarVal.textContent = Math.round(absHeel);
     }
 
     const sog = fmtSog(snap.sog);

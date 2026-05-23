@@ -9,7 +9,9 @@
   --fg: #ffffff;        /* white */
   --dim: #6a6a6a;       /* gray (secondary text) */
   --line: #1c1c1c;      /* hairline borders */
-  --accent: #DA121A;    /* red — the only colored accent */
+  --accent: #DA121A;    /* red — over target / errors */
+  --on-target: #4ADE80; /* green — within target ±3° */
+  --under-target: #4A9EFF; /* blue — below target − 3° */
 
   /* Legacy aliases kept so existing rules still compile; both map to
      primary white now that we use only black/white/red. */
@@ -166,25 +168,28 @@ body.view-start #view-toggle-btn { color: var(--accent); border-color: var(--acc
   flex-direction: column;
   gap: 10px;
 }
-.heel-bar-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  line-height: 1;
-}
 .heel-bar-num {
   font-size: clamp(68px, 17vw, 140px);
   font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 0.95;
+  text-align: center;
+  color: var(--fg);
+  transition: color 160ms ease;
 }
 .heel-bar-num .unit { font-size: 0.32em; color: var(--dim); }
-.heel-bar-side {
-  font-size: clamp(40px, 10vw, 80px);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--accent);
-}
+
+/* Heel color states: applied to both the value (number mode) and the
+   bar number + fill (bar mode). Driven by data-state on the heel row. */
+.row-heel[data-state="under"] .heel-value,
+.row-heel[data-state="under"] .heel-bar-num { color: var(--under-target); }
+.row-heel[data-state="on"]    .heel-value,
+.row-heel[data-state="on"]    .heel-bar-num { color: var(--on-target); }
+.row-heel[data-state="over"]  .heel-value,
+.row-heel[data-state="over"]  .heel-bar-num { color: var(--accent); }
+.row-heel[data-state="under"] .heel-fill { background: var(--under-target); }
+.row-heel[data-state="on"]    .heel-fill { background: var(--on-target); }
+.row-heel[data-state="over"]  .heel-fill { background: var(--accent); }
 .heel-bar-track {
   position: relative;
   height: 36px;
@@ -201,7 +206,6 @@ body.view-start #view-toggle-btn { color: var(--accent); border-color: var(--acc
   border-radius: 5px 0 0 5px;
   transition: width 220ms cubic-bezier(.2,.7,.2,1), background 120ms ease;
 }
-.heel-fill.over { background: var(--accent); }
 .heel-target-mark {
   position: absolute;
   top: -10px;
