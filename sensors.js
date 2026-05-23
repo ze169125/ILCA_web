@@ -42,9 +42,22 @@
     sampleHz: 0,
   };
 
+  // SOG smoothing: window over which raw GPS speed samples are averaged.
+  // Configurable at runtime via localStorage `pampero.sogWindowMs` (default
+  // 2000ms). 0 disables smoothing → raw GPS speed shown directly.
+  const SOG_WINDOW_MS_DEFAULT = 2000;
+  function getSogWindowMs() {
+    const v = parseInt(localStorage.getItem('pampero.sogWindowMs') || '', 10);
+    return Number.isFinite(v) && v >= 0 ? v : SOG_WINDOW_MS_DEFAULT;
+  }
+  // Speeds below this are clipped to zero (covers the GPS noise floor at
+  // rest, where many devices report 0.3–0.8 kn even when stationary).
+  const SOG_ZERO_THRESHOLD = 0.3;
+
   // Ring buffers
   const headBuf = []; // {t, v: degrees}
   const motionBuf = []; // {t, x, y, z}
+  const sogBuf = []; // {t, v: knots}
 
   function pushBuf(buf, v) {
     const now = performance.now();
@@ -58,6 +71,18 @@
     motionBuf.push({ t: now, x, y, z });
     const cutoff = now - BUFFER_MS;
     while (motionBuf.length && motionBuf[0].t < cutoff) motionBuf.shift();
+  }
+
+  function meanSog(windowMs) {
+    const cutoff = performance.now() - windowMs;
+    let s = 0, n = 0;
+    for (let i = sogBuf.length - 1; i >= 0; i--) {
+      if (sogBuf[i].t < cutoff) break;
+      s += sogBuf[i].v; n++;
+    }
+    if (!n) return null;
+    const avg = s / n;
+    return avg < SOG_ZERO_THRESHOLD ? 0 : avg;
   }
 
   function meanMotion(windowMs) {
@@ -185,7 +210,14 @@
     state.lat = c.latitude;
     state.lon = c.longitude;
     state.acc = c.accuracy;
-    state.sog = (c.speed != null && c.speed >= 0) ? c.speed * 1.94384 : null;
+    const rawSog = (c.speed != null && c.speed >= 0) ? c.speed * 1.94384 : null;
+    state.sog = rawSog;
+    if (rawSog != null) {
+      const now = performance.now();
+      sogBuf.push({ t: now, v: rawSog });
+      const cutoff = now - BUFFER_MS;
+      while (sogBuf.length && sogBuf[0].t < cutoff) sogBuf.shift();
+    }
     state.cog = (c.heading != null && !Number.isNaN(c.heading)) ? c.heading : null;
     state.t = new Date(p.timestamp || Date.now()).toISOString();
     const forceGps = localStorage.getItem('pampero.headingSource') === 'gps';
@@ -251,11 +283,16 @@
     const m = meanMotion(WINDOW_MS);
     const heel = (state.heelFused == null) ? null : state.heelFused - state.heelOffset;
     state.sampleHz = calcRate();
+    const sogWindowMs = getSogWindowMs();
+    const rawClipped = (state.sog != null && state.sog < SOG_ZERO_THRESHOLD) ? 0 : state.sog;
+    const smoothedSog = sogWindowMs > 0 ? meanSog(sogWindowMs) : rawClipped;
     return {
       t: new Date().toISOString(),
       lat: state.lat,
       lon: state.lon,
-      sog: state.sog,
+      sog: smoothedSog != null ? smoothedSog : rawClipped,
+      sogRaw: rawClipped,
+      sogWindowMs: sogWindowMs,
       cog: state.cog,
       heading,
       heel,

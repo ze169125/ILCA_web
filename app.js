@@ -16,6 +16,8 @@
   const RACE_START_KEY = 'pampero.raceStart';
   const HEADING_SOURCE_KEY = 'pampero.headingSource';
   const VIEW_KEY = 'pampero.view';
+  const SOG_WINDOW_KEY = 'pampero.sogWindowMs';
+  const SOG_WINDOW_OPTIONS = [0, 1000, 2000, 3000, 5000];
 
   function getHeadingSource() {
     return localStorage.getItem(HEADING_SOURCE_KEY) === 'gps' ? 'gps' : 'auto';
@@ -30,7 +32,28 @@
     if (el) el.textContent = getHeadingSource() === 'gps' ? 'GPS' : 'Bússola';
   }
 
-  const sailNumber = (localStorage.getItem('pampero.sail') || '').toUpperCase();
+  function getSogWindowMs() {
+    const v = parseInt(localStorage.getItem(SOG_WINDOW_KEY) || '', 10);
+    return SOG_WINDOW_OPTIONS.includes(v) ? v : 2000;
+  }
+  function cycleSogWindow() {
+    const cur = getSogWindowMs();
+    const idx = SOG_WINDOW_OPTIONS.indexOf(cur);
+    const next = SOG_WINDOW_OPTIONS[(idx + 1) % SOG_WINDOW_OPTIONS.length];
+    if (next === 2000) localStorage.removeItem(SOG_WINDOW_KEY);
+    else localStorage.setItem(SOG_WINDOW_KEY, String(next));
+    refreshSogWindowLabel();
+    return next;
+  }
+  function refreshSogWindowLabel() {
+    const el = document.getElementById('sog-window-label');
+    if (el) {
+      const ms = getSogWindowMs();
+      el.textContent = ms === 0 ? 'cru' : `${ms / 1000}s`;
+    }
+  }
+
+  const sailNumber = (localStorage.getItem('pampero.sail') || '').trim();
   if (!sailNumber) {
     location.replace('setup.html');
     return;
@@ -51,23 +74,45 @@
   }
 
   // --- view switching ---
+  // Header toggle only swaps main ↔ start. Settings is opened from the menu
+  // and the Back button returns to whatever view was previously active.
+  let returnView = 'main';
   function getView() {
-    return localStorage.getItem(VIEW_KEY) === 'start' ? 'start' : 'main';
+    const v = localStorage.getItem(VIEW_KEY);
+    if (v === 'start' || v === 'settings') return v;
+    return 'main';
   }
   function setView(v) {
-    if (v === 'start') localStorage.setItem(VIEW_KEY, 'start');
-    else localStorage.removeItem(VIEW_KEY);
-    document.body.classList.remove('view-main', 'view-start');
+    if (v === 'main') localStorage.removeItem(VIEW_KEY);
+    else localStorage.setItem(VIEW_KEY, v);
+    document.body.classList.remove('view-main', 'view-start', 'view-settings');
     document.body.classList.add(`view-${v}`);
     const toggle = document.getElementById('view-toggle-btn');
-    if (toggle) toggle.textContent = v === 'start' ? 'Regata' : 'Largada';
+    if (toggle) {
+      // Header toggle is hidden in settings; otherwise shows the other live view.
+      toggle.textContent = v === 'start' ? 'Regata' : 'Largada';
+      toggle.style.display = v === 'settings' ? 'none' : '';
+    }
+    if (v === 'settings') refreshSettingsUI();
+  }
+
+  function refreshSettingsUI() {
+    const src = getHeadingSource();
+    document.querySelectorAll('#seg-source button').forEach(b => {
+      b.classList.toggle('active', b.dataset.source === src);
+    });
+    const sog = String(getSogWindowMs());
+    document.querySelectorAll('#seg-sog button').forEach(b => {
+      b.classList.toggle('active', b.dataset.sog === sog);
+    });
   }
 
   // --- timer end detection ---
   let prevTimerRemaining = null;
   function checkTimerEnd(now) {
-    if (now != null && prevTimerRemaining != null && prevTimerRemaining > 0 && now <= 0) {
-      // Timer just hit 0
+    if (now != null && prevTimerRemaining != null && prevTimerRemaining > 0 && now <= 0
+        && StartLine.isRunning()) {
+      // Timer just hit 0 while running (not manually zeroed via -1min while paused)
       StartLine.cue('go');
       StartLine.stopTimer();
       startRecording();
@@ -115,6 +160,7 @@
 
     setView(getView());
     refreshHeadingSourceLabel();
+    refreshSogWindowLabel();
     UI.setStatus('pronto', 'ok');
     setInterval(renderTick, 500);
     setInterval(slowTick, 1000);
@@ -126,7 +172,7 @@
       const metrics = StartLine.metrics(snap);
       const remaining = StartLine.getTimerRemaining();
       checkTimerEnd(remaining);
-      UI.renderStart(snap, metrics, remaining);
+      UI.renderStart(snap, metrics, remaining, StartLine.isRunning());
     } else {
       UI.render(snap);
     }
@@ -163,7 +209,9 @@
   document.getElementById('menu-btn').addEventListener('click', () => menu.showModal());
   document.getElementById('view-toggle-btn').addEventListener('click', () => {
     StartLine.ensureAudio();
-    setView(getView() === 'start' ? 'main' : 'start');
+    const next = getView() === 'start' ? 'main' : 'start';
+    if (next === 'start') StartLine.ensureDefaultTimer();
+    setView(next);
   });
   menu.addEventListener('click', async (e) => {
     const btn = e.target.closest('button[data-action]');
@@ -173,6 +221,7 @@
       menu.close();
     } else if (action === 'open-start') {
       StartLine.ensureAudio();
+      StartLine.ensureDefaultTimer();
       setView('start');
       menu.close();
     } else if (action === 'start-race') {
@@ -183,14 +232,9 @@
       stopRecording();
       UI.setStatus('regata parada (dados mantidos)', 'warn');
       menu.close();
-    } else if (action === 'zero-heel') {
-      const ok = Sensors.zeroHeel();
-      UI.setStatus(ok ? 'heel zerado' : 'sem leitura pra zerar', ok ? 'ok' : 'warn');
-      menu.close();
-    } else if (action === 'toggle-heading-source') {
-      const next = getHeadingSource() === 'gps' ? 'auto' : 'gps';
-      setHeadingSource(next);
-      UI.setStatus(`fonte: ${next === 'gps' ? 'GPS' : 'Bússola'}`, 'ok');
+    } else if (action === 'open-settings') {
+      returnView = getView() === 'start' ? 'start' : 'main';
+      setView('settings');
       menu.close();
     } else if (action === 'share-gpx') {
       menu.close();
@@ -209,18 +253,47 @@
     } else if (action === 'open-docs') {
       menu.close();
       location.href = 'como-usar.html';
-    } else if (action === 'clear-data') {
-      if (confirm('Apagar todos os dados locais e o número do barco?')) {
-        if (window.Storage && Storage.clearAll) await Storage.clearAll();
-        stopRecording();
-        StartLine.stopTimer();
-        StartLine.clearMarks();
-        localStorage.removeItem(RACE_START_KEY);
-        localStorage.removeItem(VIEW_KEY);
-        localStorage.removeItem('pampero.sail');
-        location.replace('setup.html');
-      } else {
-        menu.close();
+    }
+  });
+
+  // --- settings view actions ---
+  async function clearAllData() {
+    if (window.Storage && Storage.clearAll) await Storage.clearAll();
+    stopRecording();
+    StartLine.stopTimer();
+    StartLine.clearMarks();
+    localStorage.removeItem(RACE_START_KEY);
+    localStorage.removeItem(VIEW_KEY);
+    localStorage.removeItem(SOG_WINDOW_KEY);
+    localStorage.removeItem(HEADING_SOURCE_KEY);
+    localStorage.removeItem('pampero.sail');
+    location.replace('setup.html');
+  }
+
+  document.getElementById('view-settings').addEventListener('click', async (e) => {
+    const btn = e.target.closest('button[data-settingsaction], button[data-source], button[data-sog]');
+    if (!btn) return;
+    if (btn.dataset.source) {
+      setHeadingSource(btn.dataset.source);
+      refreshSettingsUI();
+      return;
+    }
+    if (btn.dataset.sog) {
+      const ms = parseInt(btn.dataset.sog, 10);
+      if (ms === 2000) localStorage.removeItem(SOG_WINDOW_KEY);
+      else localStorage.setItem(SOG_WINDOW_KEY, String(ms));
+      refreshSettingsUI();
+      return;
+    }
+    const a = btn.dataset.settingsaction;
+    if (a === 'back') {
+      setView(returnView);
+    } else if (a === 'zero-heel') {
+      const ok = Sensors.zeroHeel();
+      UI.setStatus(ok ? 'heel zerado' : 'sem leitura pra zerar', ok ? 'ok' : 'warn');
+    } else if (a === 'clear-data') {
+      if (confirm('Apagar TODOS os dados locais (gravação, número da vela, marcas, calibração)?')) {
+        await clearAllData();
       }
     }
   });
@@ -232,21 +305,30 @@
     StartLine.ensureAudio();
     const a = btn.dataset.startaction;
     const snap = Sensors.read();
-    if (a === 'pin1') {
-      if (snap.lat == null) { UI.setStatus('sem GPS pra pingar', 'warn'); return; }
-      StartLine.setMark(0, snap.lat, snap.lon);
-    } else if (a === 'pin2') {
-      if (snap.lat == null) { UI.setStatus('sem GPS pra pingar', 'warn'); return; }
-      StartLine.setMark(1, snap.lat, snap.lon);
-    } else if (a === 't5') {
-      StartLine.startTimer(300);
-    } else if (a === 't4') {
-      StartLine.startTimer(240);
-    } else if (a === 't3') {
-      StartLine.startTimer(180);
-    } else if (a === 'cancel-timer') {
-      StartLine.stopTimer();
+    if (a === 'pin1' || a === 'pin2') {
+      const idx = a === 'pin1' ? 0 : 1;
+      const label = idx === 0 ? 'Bóia' : 'CR';
+      if (StartLine.getMark(idx)) {
+        StartLine.clearMark(idx);
+        UI.setStatus(`${label} apagada`, 'warn');
+      } else {
+        if (snap.lat == null) { UI.setStatus('sem GPS pra pingar', 'warn'); return; }
+        StartLine.setMark(idx, snap.lat, snap.lon);
+        UI.setStatus(`${label} marcada`, 'ok');
+      }
+    } else if (a === 't-1') {
+      StartLine.adjustTimer(-60);
+    } else if (a === 't+1') {
+      StartLine.adjustTimer(60);
+    } else if (a === 'toggle-timer') {
+      if (StartLine.isRunning()) {
+        StartLine.pauseTimer();
+      } else {
+        StartLine.startTimer();
+      }
       prevTimerRemaining = null;
+    } else if (a === 'round') {
+      StartLine.roundTimerToMinute();
     } else if (a === 'exit') {
       setView('main');
     }

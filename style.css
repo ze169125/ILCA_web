@@ -45,6 +45,7 @@ body.live {
 }
 body.view-main #view-main { display: grid; }
 body.view-start #view-start { display: grid; }
+body.view-settings #view-settings { display: grid; }
 
 header {
   display: flex;
@@ -199,6 +200,101 @@ dialog#menu button.danger {
   color: var(--puka);
   border-color: rgba(218, 18, 26, 0.35);
 }
+dialog#menu hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 6px 0;
+}
+
+/* --- Settings view --- */
+.view-settings {
+  grid-template-rows: 1fr !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px 32px;
+  gap: 22px;
+}
+.settings-back {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--dim);
+  padding: 8px 14px;
+  font-family: inherit;
+  font-size: 13px;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+}
+.settings-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 4px 0 0;
+  letter-spacing: -0.02em;
+}
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.settings-label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 700;
+}
+.settings-hint {
+  font-size: 12px;
+  color: var(--dim);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+.settings-danger .settings-label { color: var(--puka); }
+
+.seg {
+  display: flex;
+  gap: 4px;
+  background: #141414;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 4px;
+}
+.seg button {
+  flex: 1;
+  padding: 10px 8px;
+  background: transparent;
+  border: none;
+  color: var(--dim);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+}
+.seg button.active {
+  background: var(--qori);
+  color: #0a0a0a;
+}
+.settings-btn {
+  padding: 14px;
+  background: #1c1c1c;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.settings-btn.danger {
+  background: rgba(218, 18, 26, 0.12);
+  border-color: rgba(218, 18, 26, 0.35);
+  color: var(--puka);
+}
 
 /* --- Start view --- */
 .row-timer .value { font-size: clamp(96px, 28vw, 240px); color: var(--qori); }
@@ -242,6 +338,35 @@ dialog#menu button.danger {
 .start-foot .controls button.secondary {
   background: transparent;
   color: var(--dim);
+}
+.start-foot .controls.pins {
+  gap: 24px;
+  padding: 10px 24px 6px;
+}
+.start-foot .controls .pin-btn {
+  background: transparent;
+  color: var(--qori);
+  border: 2px solid var(--qori);
+  border-radius: 999px;
+  padding: 16px 8px;
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  transition: background 120ms ease, color 120ms ease;
+}
+.start-foot .controls .pin-btn.active {
+  background: var(--qori);
+  color: #0a0a0a;
+}
+.start-foot .controls .primary {
+  background: var(--qori);
+  color: #0a0a0a;
+  border-color: var(--qori);
+  font-size: 18px;
+}
+.start-foot .controls .primary.running {
+  background: var(--puka);
+  color: #fff;
+  border-color: var(--puka);
 }
 
 /* Setup page (unchanged behavior, tightened look) */

@@ -19,10 +19,9 @@
   const timerVal = document.getElementById('timer-val');
   const distVal = document.getElementById('dist-val');
   const etaVal = document.getElementById('eta-val');
-  const hdgMini = document.getElementById('hdg-mini');
-  const sogMini = document.getElementById('sog-mini');
   const pin1Btn = document.getElementById('pin1-btn');
   const pin2Btn = document.getElementById('pin2-btn');
+  const timerToggleBtn = document.getElementById('timer-toggle-btn');
 
   function fmtHdg(n)  { return (n == null || Number.isNaN(n)) ? '---' : Math.round(n).toString().padStart(3, '0'); }
   function fmtHeel(n) { return (n == null || Number.isNaN(n)) ? '--'  : Math.abs(Math.round(n)).toString(); }
@@ -74,9 +73,9 @@
     return Math.round(m / 5) * 5 + ''; // round to 5m for big distances
   }
 
-  let lastStart = { timer: '', dist: '', eta: '', hdg: '', sog: '', p1: '', p2: '' };
+  let lastStart = { timer: '', dist: '', eta: '', p1: '', p2: '', running: '' };
 
-  function renderStart(snap, lineMetrics, timerRemaining) {
+  function renderStart(snap, lineMetrics, timerRemaining, timerRunning) {
     const t = fmtTime(timerRemaining);
     if (t !== lastStart.timer) { timerVal.textContent = t; lastStart.timer = t; }
 
@@ -86,16 +85,20 @@
     const eta = fmtTime(lineMetrics ? lineMetrics.eta : null);
     if (eta !== lastStart.eta) { etaVal.textContent = eta; lastStart.eta = eta; }
 
-    const h = fmtHdg(snap.heading);
-    if (h !== lastStart.hdg) { hdgMini.textContent = h; lastStart.hdg = h; }
+    const p1Active = !!(lineMetrics && lineMetrics.hasMark1);
+    const p1State = p1Active ? 'on' : 'off';
+    if (p1State !== lastStart.p1) { pin1Btn.classList.toggle('active', p1Active); lastStart.p1 = p1State; }
+    const p2Active = !!(lineMetrics && lineMetrics.hasMark2);
+    const p2State = p2Active ? 'on' : 'off';
+    if (p2State !== lastStart.p2) { pin2Btn.classList.toggle('active', p2Active); lastStart.p2 = p2State; }
 
-    const s = fmtSog(snap.sog);
-    if (s !== lastStart.sog) { sogMini.textContent = s; lastStart.sog = s; }
-
-    const p1 = lineMetrics && lineMetrics.hasMark1 ? '● Bóia 1' : '○ Bóia 1';
-    if (p1 !== lastStart.p1) { pin1Btn.textContent = p1; lastStart.p1 = p1; }
-    const p2 = lineMetrics && lineMetrics.hasMark2 ? '● Bóia 2' : '○ Bóia 2';
-    if (p2 !== lastStart.p2) { pin2Btn.textContent = p2; lastStart.p2 = p2; }
+    const running = !!timerRunning;
+    const runningState = running ? 'on' : 'off';
+    if (runningState !== lastStart.running) {
+      timerToggleBtn.textContent = running ? '❚❚' : '▶';
+      timerToggleBtn.classList.toggle('running', running);
+      lastStart.running = runningState;
+    }
   }
 
   window.UI = { render, renderStart, setStatus, setSailBadge };

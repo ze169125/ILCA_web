@@ -19,10 +19,10 @@
     <p class="sub">ABCL Lightning — registro inicial</p>
 
     <form id="form" autocomplete="off">
-      <label for="sail">Número de vela</label>
-      <input id="sail" type="text" inputmode="latin" autocapitalize="characters"
-             placeholder="BRA-15832" spellcheck="false" required>
-      <p class="hint">Ex.: <code>BRA-15832</code></p>
+      <label for="sail">Identificação do barco</label>
+      <input id="sail" type="text" inputmode="latin" autocapitalize="words"
+             placeholder="BRA-15832, Lightning Maria, ..." spellcheck="false" required>
+      <p class="hint">Pode ser número de vela (<code>BRA-15832</code>), nome do barco, ou qualquer texto. Aparece no rodapé e nos arquivos exportados.</p>
 
       <button id="start" type="submit">Iniciar</button>
       <p class="hint" id="perm-hint">O botão pede permissão de GPS e orientação.</p>
@@ -31,7 +31,7 @@
   <script>
     const form = document.getElementById('form');
     const sailInput = document.getElementById('sail');
-    sailInput.value = (localStorage.getItem('pampero.sail') || '').toUpperCase();
+    sailInput.value = localStorage.getItem('pampero.sail') || '';
 
     async function requestSensorPerms() {
       if (typeof DeviceOrientationEvent !== 'undefined'
@@ -49,9 +49,9 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const v = sailInput.value.trim().toUpperCase();
-      if (!/^[A-Z]{2,4}-?\d{1,6}$/.test(v)) {
-        alert('Número de vela inválido. Exemplo: BRA-15832');
+      const v = sailInput.value.trim();
+      if (!v) {
+        alert('Coloca uma identificação qualquer.');
         return;
       }
       localStorage.setItem('pampero.sail', v);

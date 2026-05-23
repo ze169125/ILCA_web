@@ -30,25 +30,92 @@
     localStorage.setItem(MARK_KEYS[i], JSON.stringify(v));
     return v;
   }
+  function clearMark(i) {
+    localStorage.removeItem(MARK_KEYS[i]);
+  }
   function clearMarks() {
     MARK_KEYS.forEach(k => localStorage.removeItem(k));
   }
 
   // --- timer ---
+  // State machine: paused (seconds in TIMER_PAUSED_KEY) ↔ running
+  // (TIMER_START_KEY = epoch ms when started, TIMER_DURATION_KEY = target
+  // seconds at that start). Only one of {paused, running} keys is set at a
+  // time. stopTimer clears everything.
+  const TIMER_PAUSED_KEY = 'pampero.timerPaused';
+  const DEFAULT_TIMER_SECONDS = 300; // 5min
+
+  function isRunning() {
+    return localStorage.getItem(TIMER_START_KEY) != null;
+  }
+  function getTimerRemaining() {
+    if (isRunning()) {
+      const start = parseInt(localStorage.getItem(TIMER_START_KEY), 10);
+      const duration = parseFloat(localStorage.getItem(TIMER_DURATION_KEY));
+      const elapsed = (Date.now() - start) / 1000;
+      return Math.max(0, duration - elapsed);
+    }
+    const paused = localStorage.getItem(TIMER_PAUSED_KEY);
+    return paused != null ? parseFloat(paused) : null;
+  }
+  function ensureDefaultTimer() {
+    // Called when entering the start view: if no timer state, seed paused 5:00.
+    if (getTimerRemaining() == null) {
+      localStorage.setItem(TIMER_PAUSED_KEY, String(DEFAULT_TIMER_SECONDS));
+    }
+  }
   function startTimer(durationSec) {
+    // If durationSec is provided, use it; otherwise resume the paused value.
+    let duration;
+    if (durationSec != null) {
+      duration = durationSec;
+    } else {
+      const paused = localStorage.getItem(TIMER_PAUSED_KEY);
+      duration = paused != null ? parseFloat(paused) : DEFAULT_TIMER_SECONDS;
+    }
+    if (duration <= 0) duration = DEFAULT_TIMER_SECONDS;
     localStorage.setItem(TIMER_START_KEY, String(Date.now()));
-    localStorage.setItem(TIMER_DURATION_KEY, String(durationSec));
+    localStorage.setItem(TIMER_DURATION_KEY, String(duration));
+    localStorage.removeItem(TIMER_PAUSED_KEY);
+  }
+  function pauseTimer() {
+    const remaining = getTimerRemaining();
+    localStorage.removeItem(TIMER_START_KEY);
+    localStorage.removeItem(TIMER_DURATION_KEY);
+    localStorage.setItem(TIMER_PAUSED_KEY, String(remaining != null ? remaining : DEFAULT_TIMER_SECONDS));
   }
   function stopTimer() {
     localStorage.removeItem(TIMER_START_KEY);
     localStorage.removeItem(TIMER_DURATION_KEY);
+    localStorage.removeItem(TIMER_PAUSED_KEY);
   }
-  function getTimerRemaining() {
-    const start = parseInt(localStorage.getItem(TIMER_START_KEY) || '0', 10);
-    if (!start) return null;
-    const duration = parseFloat(localStorage.getItem(TIMER_DURATION_KEY) || '0');
-    const elapsed = (Date.now() - start) / 1000;
-    return Math.max(0, duration - elapsed);
+  function adjustTimer(deltaSec) {
+    const cur = getTimerRemaining();
+    if (cur == null) {
+      // No state yet → seed default + apply delta
+      const next = Math.max(0, DEFAULT_TIMER_SECONDS + deltaSec);
+      localStorage.setItem(TIMER_PAUSED_KEY, String(next));
+      return;
+    }
+    const next = Math.max(0, cur + deltaSec);
+    if (isRunning()) {
+      // Restart from new remaining
+      localStorage.setItem(TIMER_START_KEY, String(Date.now()));
+      localStorage.setItem(TIMER_DURATION_KEY, String(next));
+    } else {
+      localStorage.setItem(TIMER_PAUSED_KEY, String(next));
+    }
+  }
+  function roundTimerToMinute() {
+    const cur = getTimerRemaining();
+    if (cur == null) return;
+    const rounded = Math.max(0, Math.round(cur / 60) * 60);
+    if (isRunning()) {
+      localStorage.setItem(TIMER_START_KEY, String(Date.now()));
+      localStorage.setItem(TIMER_DURATION_KEY, String(rounded));
+    } else {
+      localStorage.setItem(TIMER_PAUSED_KEY, String(rounded));
+    }
   }
 
   // --- math (local equirectangular) ---
@@ -130,8 +197,9 @@
   }
 
   window.StartLine = {
-    getMark, setMark, clearMarks,
-    startTimer, stopTimer, getTimerRemaining,
+    getMark, setMark, clearMark, clearMarks,
+    startTimer, pauseTimer, stopTimer, getTimerRemaining,
+    isRunning, ensureDefaultTimer, adjustTimer, roundTimerToMinute,
     metrics,
     ensureAudio, cue,
   };

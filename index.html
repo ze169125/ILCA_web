@@ -48,6 +48,46 @@
     </footer>
   </div>
 
+  <div id="view-settings" class="view view-settings">
+    <main class="settings-list">
+      <button class="settings-back" data-settingsaction="back">← Voltar</button>
+      <h1 class="settings-title">Configurações</h1>
+
+      <section class="settings-group">
+        <div class="settings-label">Fonte do heading</div>
+        <div class="seg" id="seg-source">
+          <button data-source="auto">Bússola</button>
+          <button data-source="gps">GPS</button>
+        </div>
+        <div class="settings-hint">Bússola = magnetômetro do celular (60Hz). GPS = COG do GPS (1Hz, imune a interferência mas só com SOG &gt; 0.5 kn).</div>
+      </section>
+
+      <section class="settings-group">
+        <div class="settings-label">Janela de média da SOG</div>
+        <div class="seg" id="seg-sog">
+          <button data-sog="0">cru</button>
+          <button data-sog="1000">1s</button>
+          <button data-sog="2000">2s</button>
+          <button data-sog="3000">3s</button>
+          <button data-sog="5000">5s</button>
+        </div>
+        <div class="settings-hint">Suaviza a velocidade calculando média móvel. Maior janela = mais estável, mais lag. "cru" mostra direto do GPS.</div>
+      </section>
+
+      <section class="settings-group">
+        <div class="settings-label">Calibração de heel</div>
+        <button class="settings-btn" data-settingsaction="zero-heel">Zerar heel agora</button>
+        <div class="settings-hint">Em águas calmas, barco nivelado: salva a inclinação atual como offset zero.</div>
+      </section>
+
+      <section class="settings-group settings-danger">
+        <div class="settings-label">Reset</div>
+        <button class="settings-btn danger" data-settingsaction="clear-data">Apagar todos os dados</button>
+        <div class="settings-hint">Limpa IndexedDB, número da vela, marcas de boia, timer. Volta pro setup inicial.</div>
+      </section>
+    </main>
+  </div>
+
   <div id="view-start" class="view">
     <main class="readout">
       <section class="row row-timer">
@@ -64,34 +104,30 @@
       </section>
     </main>
     <footer class="start-foot">
-      <div class="ribbon">
-        <span>HDG <b id="hdg-mini">---</b>°</span>
-        <span>SOG <b id="sog-mini">--</b>kn</span>
+      <div class="controls pins">
+        <button data-startaction="pin1" id="pin1-btn" class="pin-btn">Bóia</button>
+        <button data-startaction="pin2" id="pin2-btn" class="pin-btn">CR</button>
       </div>
       <div class="controls">
-        <button data-startaction="pin1" id="pin1-btn">○ Bóia 1</button>
-        <button data-startaction="pin2" id="pin2-btn">○ Bóia 2</button>
-      </div>
-      <div class="controls">
-        <button data-startaction="t5">5min</button>
-        <button data-startaction="t4">4min</button>
-        <button data-startaction="t3">3min</button>
-        <button data-startaction="cancel-timer">Parar</button>
+        <button data-startaction="t-1">−1min</button>
+        <button data-startaction="t+1">+1min</button>
+        <button data-startaction="toggle-timer" id="timer-toggle-btn" class="primary">▶</button>
+        <button data-startaction="round">Arred</button>
         <button data-startaction="exit" class="secondary">Sair</button>
       </div>
     </footer>
   </div>
 
   <dialog id="menu">
-    <button data-action="open-start">⏱ Largada</button>
     <button data-action="start-race">▶ Começar regata</button>
     <button data-action="stop-race">■ Parar regata</button>
-    <button data-action="zero-heel">Zerar heel</button>
-    <button data-action="toggle-heading-source">Fonte: <span id="heading-source-label">Bússola</span></button>
+    <button data-action="open-start">⏱ Largada</button>
+    <hr>
     <button data-action="share-gpx">Compartilhar GPX</button>
     <button data-action="share-csv">Compartilhar CSV</button>
+    <hr>
+    <button data-action="open-settings">⚙ Configurações ›</button>
     <button data-action="open-docs">Como usar</button>
-    <button data-action="clear-data" class="danger">Limpar dados</button>
     <button data-action="close" class="secondary">Fechar</button>
   </dialog>
 
