@@ -37,6 +37,7 @@
   const SOG_STATE_BAND = 0.3; // ±0.3 nó around target = green
   function heelState(absHeel, target) {
     if (absHeel == null || !Number.isFinite(absHeel)) return '';
+    if (target == null || target <= 0) return ''; // off
     if (absHeel < target - HEEL_STATE_BAND) return 'under';
     if (absHeel > target + HEEL_STATE_BAND) return 'over';
     return 'on';

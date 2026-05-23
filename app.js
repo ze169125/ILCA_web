@@ -20,7 +20,7 @@
   const SOG_WINDOW_OPTIONS = [0, 1000, 2000, 3000, 5000];
   const HEEL_MODE_KEY = 'pampero.heelMode';
   const HEEL_TARGET_KEY = 'pampero.heelTarget';
-  const HEEL_TARGET_OPTIONS = [10, 15, 20, 25, 30];
+  const HEEL_TARGET_OPTIONS = [0, 10, 15, 20, 25, 30];
   const SOG_TARGET_KEY = 'pampero.sogTarget';
   const SOG_TARGET_OPTIONS = [0, 3, 4, 5, 6, 7];
 
@@ -42,8 +42,13 @@
     const target = getHeelTarget();
     const mark = document.getElementById('heel-target-mark');
     if (mark) {
-      const pct = Math.min(100, (target / 30) * 100);
-      mark.style.left = pct + '%';
+      if (target <= 0) {
+        mark.style.display = 'none';
+      } else {
+        mark.style.display = '';
+        const pct = Math.min(100, (target / 30) * 100);
+        mark.style.left = pct + '%';
+      }
     }
   }
 

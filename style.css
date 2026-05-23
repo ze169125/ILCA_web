@@ -196,6 +196,7 @@ body.view-start #view-toggle-btn { color: var(--accent); border-color: var(--acc
 .row-sog[data-state="on"]    .value { color: var(--on-target); }
 .row-sog[data-state="over"]  .value { color: var(--accent); }
 .row-sog .value { transition: color 160ms ease; }
+
 .heel-bar-track {
   position: relative;
   height: 52px;
