@@ -5,8 +5,9 @@
  * sensors.js — compass, heel (inclinometer), GPS.
  *
  * Native sensor events fire at ~60Hz and are buffered. read() returns the
- * mean over the last WINDOW_MS milliseconds (circular mean for heading,
- * linear mean for heel). Visual layer is expected to poll at 2Hz.
+ * mean over the last angleWindowMs milliseconds (circular mean for heading,
+ * linear mean for heel; window configurable via pampero.angleWindowMs).
+ * Visual layer is expected to poll at 2Hz.
  */
 (function () {
   'use strict';
@@ -14,13 +15,21 @@
   const HEEL_OFFSET_KEY = 'pampero.heelOffset';
   const DEG = 180 / Math.PI;
 
-  // Sliding-window means. Tune to taste: bigger → smoother but more lag.
-  const WINDOW_MS = 500;
+  // Sliding-window means for heading + heel. Configurable at runtime via
+  // localStorage `pampero.angleWindowMs` (default 1000ms). Bigger → smoother
+  // but more lag. read() averages all samples in the last angleWindowMs.
+  const ANGLE_WINDOW_MS_DEFAULT = 1000;
+  const ANGLE_WINDOW_OPTIONS = [500, 1000, 2000];
+  function getAngleWindowMs() {
+    const v = parseInt(localStorage.getItem('pampero.angleWindowMs') || '', 10);
+    return ANGLE_WINDOW_OPTIONS.includes(v) ? v : ANGLE_WINDOW_MS_DEFAULT;
+  }
   // Widen up to this when the default window has no samples (e.g. GPS at 1Hz
   // with no compass). Prevents the display flickering to "---" between fixes.
   const FALLBACK_WINDOW_MS = 3000;
-  // Keep a bit of margin in the buffer so trimming is cheap.
-  const BUFFER_MS = 4000;
+  // Keep a bit of margin in the buffer so trimming is cheap (must exceed the
+  // largest angle window + fallback).
+  const BUFFER_MS = 5000;
 
   // Complementary filter blend: higher = trust gyro more (rejects motion
   // accels) but drifts faster; lower = trust accel more (locks to gravity).
@@ -58,6 +67,7 @@
   const headBuf = []; // {t, v: degrees}
   const motionBuf = []; // {t, x, y, z}
   const sogBuf = []; // {t, v: knots}
+  const heelBuf = []; // {t, v: degrees, pre-offset fused heel}
 
   function pushBuf(buf, v) {
     const now = performance.now();
@@ -95,6 +105,20 @@
     }
     if (!n) return null;
     return { ax: sx/n, ay: sy/n, az: sz/n };
+  }
+
+  // Linear mean of the fused heel over the window. Heel is a small signed
+  // angle (no wraparound), so a plain average is correct. Falls back to the
+  // instantaneous fused value if the buffer is empty.
+  function meanHeel(windowMs) {
+    const cutoff = performance.now() - windowMs;
+    let s = 0, n = 0;
+    for (let i = heelBuf.length - 1; i >= 0; i--) {
+      if (heelBuf[i].t < cutoff) break;
+      s += heelBuf[i].v; n++;
+    }
+    if (!n) return state.heelFused;
+    return s / n;
   }
 
   // Universal heel formula. Phone upright in portrait, top to sky, screen
@@ -180,7 +204,13 @@
       ? r.alpha : null;
     state.lastGyroZ = gyroZ;
 
-    updateHeelFusion(x, y, gyroZ, performance.now());
+    const now = performance.now();
+    updateHeelFusion(x, y, gyroZ, now);
+    if (state.heelFused != null) {
+      heelBuf.push({ t: now, v: state.heelFused });
+      const cutoff = now - BUFFER_MS;
+      while (heelBuf.length && heelBuf[0].t < cutoff) heelBuf.shift();
+    }
   }
 
   function updateHeelFusion(ax, ay, gyroZ, nowMs) {
@@ -279,9 +309,11 @@
   }
 
   function read() {
-    const heading = meanCircularRecent(headBuf, WINDOW_MS, FALLBACK_WINDOW_MS);
-    const m = meanMotion(WINDOW_MS);
-    const heel = (state.heelFused == null) ? null : state.heelFused - state.heelOffset;
+    const angleWindowMs = getAngleWindowMs();
+    const heading = meanCircularRecent(headBuf, angleWindowMs, FALLBACK_WINDOW_MS);
+    const m = meanMotion(angleWindowMs);
+    const heelMean = meanHeel(angleWindowMs);
+    const heel = (heelMean == null) ? null : heelMean - state.heelOffset;
     state.sampleHz = calcRate();
     const sogWindowMs = getSogWindowMs();
     const rawClipped = (state.sog != null && state.sog < SOG_ZERO_THRESHOLD) ? 0 : state.sog;
@@ -299,6 +331,7 @@
       acc: state.acc,
       headingSrc: state.headingSrc,
       sampleHz: state.sampleHz,
+      angleWindowMs: angleWindowMs,
       ax: m ? m.ax : null,
       ay: m ? m.ay : null,
       az: m ? m.az : null,
@@ -313,5 +346,5 @@
     return true;
   }
 
-  window.Sensors = { start, stop, read, zeroHeel, state, WINDOW_MS };
+  window.Sensors = { start, stop, read, zeroHeel, state, getAngleWindowMs };
 })();

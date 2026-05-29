@@ -18,6 +18,13 @@
   const VIEW_KEY = 'pampero.view';
   const SOG_WINDOW_KEY = 'pampero.sogWindowMs';
   const SOG_WINDOW_OPTIONS = [0, 1000, 2000, 3000, 5000];
+  const ANGLE_WINDOW_KEY = 'pampero.angleWindowMs';
+  const ANGLE_WINDOW_OPTIONS = [500, 1000, 2000];
+
+  function getAngleWindowMs() {
+    const v = parseInt(localStorage.getItem(ANGLE_WINDOW_KEY) || '', 10);
+    return ANGLE_WINDOW_OPTIONS.includes(v) ? v : 1000;
+  }
   const HEEL_MODE_KEY = 'pampero.heelMode';
   const HEEL_TARGET_KEY = 'pampero.heelTarget';
   const HEEL_TARGET_OPTIONS = [0, 10, 15, 20, 25, 30];
@@ -137,6 +144,10 @@
     const sog = String(getSogWindowMs());
     document.querySelectorAll('#seg-sog button').forEach(b => {
       b.classList.toggle('active', b.dataset.sog === sog);
+    });
+    const angle = String(getAngleWindowMs());
+    document.querySelectorAll('#seg-angle button').forEach(b => {
+      b.classList.toggle('active', b.dataset.angle === angle);
     });
     const heelMode = getHeelMode();
     document.querySelectorAll('#seg-heel-mode button').forEach(b => {
@@ -323,7 +334,7 @@
   }
 
   document.getElementById('view-settings').addEventListener('click', async (e) => {
-    const btn = e.target.closest('button[data-settingsaction], button[data-source], button[data-sog], button[data-heel-mode], button[data-heel-target], button[data-sog-target]');
+    const btn = e.target.closest('button[data-settingsaction], button[data-source], button[data-sog], button[data-angle], button[data-heel-mode], button[data-heel-target], button[data-sog-target]');
     if (!btn) return;
     if (btn.dataset.source) {
       setHeadingSource(btn.dataset.source);
@@ -334,6 +345,13 @@
       const ms = parseInt(btn.dataset.sog, 10);
       if (ms === 2000) localStorage.removeItem(SOG_WINDOW_KEY);
       else localStorage.setItem(SOG_WINDOW_KEY, String(ms));
+      refreshSettingsUI();
+      return;
+    }
+    if (btn.dataset.angle) {
+      const ms = parseInt(btn.dataset.angle, 10);
+      if (ms === 1000) localStorage.removeItem(ANGLE_WINDOW_KEY);
+      else localStorage.setItem(ANGLE_WINDOW_KEY, String(ms));
       refreshSettingsUI();
       return;
     }
