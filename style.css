@@ -523,3 +523,91 @@ body.setup button {
   margin-top: 8px;
 }
 code { color: var(--qori); }
+
+/* --- Landscape: rotate only main view numbers 90deg CW --- */
+@media (orientation: landscape) {
+  .view-main .row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid var(--line);
+    border-bottom: none;
+  }
+  .view-main .row:last-child { border-right: none; }
+  .view-main .label {
+    writing-mode: horizontal-tb;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
+  }
+  .view-main .value {
+    writing-mode: horizontal-tb;
+    transform: rotate(90deg);
+    font-size: clamp(56px, 12vw, 140px);
+    white-space: nowrap;
+  }
+  .view-main .unit {
+    writing-mode: horizontal-tb;
+    font-size: 16px;
+  }
+  .view-main .sub {
+    writing-mode: horizontal-tb;
+    font-size: 11px;
+    margin-top: 4px;
+  }
+  .view-main .readout {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-around;
+    height: 100%;
+  }
+  .view-main .row-heel .heel-bar {
+    transform: rotate(90deg);
+  }
+
+  header { padding: 0 10px; }
+  #view-toggle-btn {
+    font-size: 14px;
+    padding: 6px 10px;
+    height: auto;
+    min-height: 32px;
+  }
+
+  /* Start view in landscape: 2x2 layout */
+  #view-start {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr auto;
+  }
+  #view-start .readout { display: contents; }
+  #view-start .row-timer { grid-column: 1 / 3; grid-row: 1; }
+  #view-start .row-dist { grid-column: 3; grid-row: 1; }
+  #view-start .row-eta { grid-column: 3; grid-row: 2; }
+  #view-start .start-foot {
+    grid-column: 1 / 3;
+    grid-row: 2;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 8px;
+    border-top: 1px solid var(--line);
+    min-height: 0;
+  }
+  #view-start .start-foot .controls {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 4px;
+  }
+  #view-start .start-foot .controls button {
+    padding: 6px 8px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  #view-start .row { border-right: 1px solid var(--line); border-bottom: none; }
+  #view-start .row:last-child { border-right: none; }
+  #view-start .row-timer .value { font-size: clamp(64px, 14vw, 220px); }
+}
