@@ -543,8 +543,15 @@ code { color: var(--qori); }
   .view-main .value {
     writing-mode: horizontal-tb;
     transform: rotate(90deg);
-    font-size: clamp(56px, 12vw, 140px);
+    font-size: clamp(64px, 14vw, 160px);
     white-space: nowrap;
+    overflow: visible;
+  }
+  .view-main .row {
+    overflow: visible;
+  }
+  .view-main .readout {
+    overflow: visible;
   }
   .view-main .unit {
     writing-mode: horizontal-tb;
