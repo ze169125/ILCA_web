@@ -189,14 +189,13 @@
     if (x == null || y == null || z == null) return;
     pushMotion(x, y, z);
 
-    // Gyro rate around the phone's Z axis (rotationRate.alpha). For phone
-    // upright with screen toward the sailor, Z = bow-stern axis → heel rate.
-    // Right-hand rule: +Z out of screen, +alpha = CCW viewed from +Z, which
-    // is the right side of the phone moving UP (= port heel). We want
-    // +heel = starboard, so we negate.
+    // Gyro rate around the phone's Y axis (bottom edge). This is the
+    // side-to-side tilt rate regardless of portrait/landscape because
+    // it's relative to the phone frame: +gamma = right side up.
+    // We want +heel = starboard (right side down), so negate.
     const r = e.rotationRate;
-    const gyroZ = (r && typeof r.alpha === 'number' && !Number.isNaN(r.alpha))
-      ? r.alpha : null;
+    const gyroZ = (r && typeof r.gamma === 'number' && !Number.isNaN(r.gamma))
+      ? -r.gamma : null;
     state.lastGyroZ = gyroZ;
 
     const now = performance.now();
