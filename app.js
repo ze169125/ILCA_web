@@ -19,11 +19,11 @@
   const SOG_WINDOW_KEY = 'pampero.sogWindowMs';
   const SOG_WINDOW_OPTIONS = [0, 1000, 2000, 3000, 5000];
   const ANGLE_WINDOW_KEY = 'pampero.angleWindowMs';
-  const ANGLE_WINDOW_OPTIONS = [500, 1000, 2000];
+  const ANGLE_WINDOW_OPTIONS = [1000, 2000, 3000];
 
   function getAngleWindowMs() {
     const v = parseInt(localStorage.getItem(ANGLE_WINDOW_KEY) || '', 10);
-    return ANGLE_WINDOW_OPTIONS.includes(v) ? v : 1000;
+    return ANGLE_WINDOW_OPTIONS.includes(v) ? v : 2000;
   }
   const HEEL_MODE_KEY = 'pampero.heelMode';
   const HEEL_TARGET_KEY = 'pampero.heelTarget';

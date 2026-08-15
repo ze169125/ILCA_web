@@ -152,13 +152,8 @@
   // Tries windowMs first (good for 60Hz magnetometer); if no samples, widens
   // up to fallbackMs (covers gaps between 1Hz GPS fixes so the display
   // doesn't flicker to "---").
-  function meanCircularRecent(buf, windowMs, fallbackMs) {
-    const fast = meanCircularInWindow(buf, windowMs);
-    if (fast != null) return fast;
-    if (fallbackMs && fallbackMs > windowMs) {
-      return meanCircularInWindow(buf, fallbackMs);
-    }
-    return null;
+  function meanCircularRecent(buf, windowMs) {
+    return meanCircularInWindow(buf, windowMs);
   }
 
   // --- sample-rate meter (sliding 1s window on heading buffer) ---
@@ -310,7 +305,7 @@
 
   function read() {
     const angleWindowMs = getAngleWindowMs();
-    const heading = meanCircularRecent(headBuf, angleWindowMs, FALLBACK_WINDOW_MS);
+    const heading = meanCircularRecent(headBuf, angleWindowMs);
     const m = meanMotion(angleWindowMs);
     const heelMean = meanHeel(angleWindowMs);
     const heel = (heelMean == null) ? null : heelMean - state.heelOffset;
