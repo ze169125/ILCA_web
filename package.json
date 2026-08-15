@@ -1,0 +1,20 @@
+{
+  "name": "ilca_web",
+  "version": "1.0.0",
+  "description": "Progressive Web App para tracking ao vivo de veleiros de classe one-design (ABCL Lightning, ILCA/Laser).  Bússola + inclinômetro + velocidade, grava offline em IndexedDB, upload em batch de 5 s para o servidor, export GPX com extensões `pampero:` ao final.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ze169125/ILCA_web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ze169125/ILCA_web/issues"
+  },
+  "homepage": "https://github.com/ze169125/ILCA_web#readme"
+}

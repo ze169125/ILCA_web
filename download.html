@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Pampero — Instalar</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --fg: #f5f5f5;
+      --muted: #888;
+      --line: #222;
+      --accent: #ff3b30;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: grid;
+      place-items: center;
+      min-height: 100dvh;
+      padding: 24px;
+    }
+    main {
+      width: 100%;
+      max-width: 520px;
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    .step {
+      background: #141414;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .step h2 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .step p {
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--fg);
+    }
+    .step ol {
+      margin-left: 18px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .download-btn {
+      display: block;
+      width: 100%;
+      padding: 18px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 8px;
+    }
+    .note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 18px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Instalar Pampero</h1>
+    <p class="sub">Use como app independente no celular.</p>
+
+    <div class="step">
+      <h2>Android</h2>
+      <ol>
+        <li>Abra no Chrome: <strong>Menu → Adicionar à tela inicial</strong></li>
+        <li>Ou: <strong>Menu → Instalar app</strong></li>
+        <li>O ícone aparece na home como app nativo</li>
+      </ol>
+    </div>
+
+    <div class="step">
+      <h2>iPhone / iPad</h2>
+      <ol>
+        <li>Abra no Safari</li>
+        <li>Toque em <strong>Compartilhar → Adicionar à Tela de Início</strong></li>
+        <li>O ícone aparece na home</li>
+      </ol>
+    </div>
+
+    <div class="step">
+      <h2>Requisito importante</h2>
+      <p>Para bússola/giroscópio funcionarem, é preciso abrir o app por <strong>HTTPS</strong>. O servidor local usa certificado autoassinado — aceite o aviso do navegador na primeira vez.</p>
+    </div>
+
+    <a class="download-btn" href="https://192.168.0.150:8443/index.html">Abrir app agora</a>
+    <p class="note">Se o botão acima não abrir, acesse manualmente:<br>
+      <code>https://192.168.0.150:8443/index.html</code></p>
+
+    <a class="download-btn" style="background:#1c1c1c; border:1px solid #2a2a2a; margin-top:12px;" href="https://192.168.0.150:8443/ILCA_web.zip">Baixar código fonte (.zip)</a>
+    <p class="note">Para gerar um APK completo, use ferramentas como <strong>PWABuilder</strong> ou <strong>Bubblewrap</strong> com este código.</p>
+  </main>
+</body>
+</html>
